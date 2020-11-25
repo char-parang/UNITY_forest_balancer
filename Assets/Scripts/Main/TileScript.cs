@@ -10,7 +10,7 @@ public class TileScript : MonoBehaviour, Clickable
     public void onClicked()
     {
         anim.runtimeAnimatorController = tswitch;
-        anim.GetCurrentAnimatorStateInfo()
+        /*anim.GetCurrentAnimatorStateInfo();*/
     }
 
     // Start is called before the first frame update
