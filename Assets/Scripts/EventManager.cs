@@ -47,14 +47,15 @@ public class EventManager : MonoBehaviour
         {
             Animator anim = holdingButton[holdingButton.Count - 1].GetComponent<Animator>();
             anim.Play("scale_down");
+            if (hit.collider != null)
+            {
+                Clickable ca = holdingButton[holdingButton.Count - 1].GetComponent<Clickable>();
+                ca.onClicked();
+                holdingButton.RemoveAt(holdingButton.Count - 1);
+            }
         }
 
-        if (hit.collider != null)
-        {
-            Clickable ca = holdingButton[holdingButton.Count - 1].GetComponent<Clickable>();
-            ca.onClicked();
-            holdingButton.RemoveAt(holdingButton.Count - 1);
-        }
+        
         /*else holdingButton.Clear();*/
     }
 }

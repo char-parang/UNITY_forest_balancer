@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class snsLoginButtonScript : MonoBehaviour, Clickable
 {
+    private bool cable;
     public void onClicked()
     {
         //TODO: SNS LOGIN

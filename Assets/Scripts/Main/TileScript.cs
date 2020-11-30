@@ -7,6 +7,8 @@ public class TileScript : MonoBehaviour, Clickable
 
     public RuntimeAnimatorController click, tswitch;
     private Animator anim;
+    private bool cable= false;
+
     public void onClicked()
     {
         anim.runtimeAnimatorController = tswitch;
@@ -25,4 +27,5 @@ public class TileScript : MonoBehaviour, Clickable
     {
         
     }
+
 }
