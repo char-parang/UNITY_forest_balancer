@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CitizenScript : MonoBehaviour, Clickable
 {
+    private bool cable;
+
+
     public void onClicked()
     {
         switch (gameObject.name)
