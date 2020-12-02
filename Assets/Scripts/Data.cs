@@ -32,8 +32,19 @@ public class Data : MonoBehaviour
         {
             sat.setSomething(who, i);
         }
+        public string getSkills()
+        {
+            return skills;
+        }
+        public int getMonth()
+        {
+            return month;
+        }
+        public int getMoney()
+        {
+            return money;
+        }
     };
-
     private class FOREST
     {
         int farmer, tree, deer, wolf;
@@ -86,6 +97,13 @@ public class Data : MonoBehaviour
     {
         string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money" };
         List<string> d = selectData(cols, "Char_info");
+        if (d.Count < 1)
+        {
+            string[] c = { "" };
+            insertData(c, "Char_info", true);
+            d = selectData(cols, "Char_info");
+        }
+        Debug.Log(d.Count);
         user.setForest('f', Int32.Parse(d[0]));
         user.setSkills(d[1]);
         user.setForest('t', Int32.Parse(d[2]));
@@ -119,15 +137,14 @@ public class Data : MonoBehaviour
 
         List<string> data = new List<string>();
         while (reader.Read())
-            for (int i = 0; i < columns.Length; i++) data.Add(reader.GetString(i));
-
+            for (int i = 0; i < columns.Length; i++) { data.Add(reader.GetString(i)); Debug.Log(columns[i]); }
         dbconn.Close();
         return data;
     }
 
     public List<string> getItemInfo(string itemName)
     {
-        string[] cols = { "Name", "Info", "Effect_info" };
+        string[] cols = { "Name", "Info", "Effect_info", "soldout" };
         return selectData(cols, "asset_Item", "itemCode='" + itemName + "'");
     }
 
@@ -137,5 +154,37 @@ public class Data : MonoBehaviour
         List<string> list = selectData(cols, "asset_Item", "itemCode='" + itemName + "'");
         Int32.TryParse(list[0], out int data);
         return data;
+    }
+
+    public void insertData(string[] columns, string table, bool def = false)
+    {
+        string conn = "URI=file:" + Application.dataPath + "/StreamingAssets/fb_DB.db";
+        IDbConnection dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open();
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        string sqlQuery = "INSERT INTO " + table + " ";
+        if (def)
+        {
+            sqlQuery += "DEFAULT VALUES";
+        }
+        else
+        {
+            sqlQuery += "(";
+            for (int i = 0; i < columns.Length; i++)
+            {
+                sqlQuery += columns[i];
+                if (i < columns.Length - 1) sqlQuery += ", ";
+            }
+            sqlQuery += ")";
+        }
+        Debug.Log(sqlQuery);
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        dbconn.Close();
+    }
+
+    public int getUserMoney()
+    {
+        return user.getMoney();
     }
 }
