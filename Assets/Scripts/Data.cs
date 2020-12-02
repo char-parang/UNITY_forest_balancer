@@ -8,13 +8,13 @@ using Mono.Data.Sqlite;
 public class Data : MonoBehaviour
 {
     protected class USER {
-        string skills;
+        int[] skills = new int[4];
         int month, money;
         FOREST forest = new FOREST();
         SATISFY sat = new SATISFY();
-        public void setSkills(string s)
+        public void setSkills(int[] i)
         {
-            skills = s;
+            skills = i;
         }
         public void setMonth(int i)
         {
@@ -32,7 +32,7 @@ public class Data : MonoBehaviour
         {
             sat.setSomething(who, i);
         }
-        public string getSkills()
+        public int[] getSkills()
         {
             return skills;
         }
@@ -103,9 +103,14 @@ public class Data : MonoBehaviour
             insertData(c, "Char_info", true);
             d = selectData(cols, "Char_info");
         }
-        Debug.Log(d.Count);
         user.setForest('f', Int32.Parse(d[0]));
-        user.setSkills(d[1]);
+        int[] data = { 0, 0, 0, 0 };
+        for (int i = 0; i < d[1].Length; i++)
+        {
+            int a = Int32.Parse(d[1][i].ToString());
+            data[i] = a;
+        } 
+        user.setSkills(data);
         user.setForest('t', Int32.Parse(d[2]));
         user.setForest('d', Int32.Parse(d[3]));
         user.setForest('w', Int32.Parse(d[4]));
@@ -117,7 +122,7 @@ public class Data : MonoBehaviour
         user.setMoney(Int32.Parse(d[10]));
     }
 
-    private List<string> selectData(string[] columns, string table, string where=null)
+    public List<string> selectData(string[] columns, string table, string where=null)
     {
         string conn = "URI=file:" + Application.dataPath + "/StreamingAssets/fb_DB.db";
         IDbConnection dbconn = (IDbConnection)new SqliteConnection(conn);
@@ -131,7 +136,6 @@ public class Data : MonoBehaviour
         }
         sqlQuery += " FROM " + table;
         if (where != null) sqlQuery += " WHERE " + where;
-        Debug.Log(sqlQuery);
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
 
@@ -177,14 +181,56 @@ public class Data : MonoBehaviour
             }
             sqlQuery += ")";
         }
-        Debug.Log(sqlQuery);
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
+        dbconn.Close();
+    }
+
+    public void updateData(string table, string[] cols, string[] vals)
+    {
+        if(cols.Length != vals.Length)
+        {
+            Debug.LogError("sql error: cols and vals not matched");
+            return;
+        }
+        string conn = "URI=file:" + Application.dataPath + "/StreamingAssets/fb_DB.db";
+        IDbConnection dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open();
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        string sqlQuery = "UPDATE " + table + " SET ";
+        for(int i =0; i < cols.Length; i++)
+        {
+            sqlQuery += cols[i] + "=" + vals[i];
+            if (i < cols.Length - 1) sqlQuery += ", ";
+        }
+        dbcmd.CommandText = sqlQuery;
         dbconn.Close();
     }
 
     public int getUserMoney()
     {
         return user.getMoney();
+    }
+    public int[] getUserSkills()
+    {
+        return user.getSkills();
+    }
+    public void setUserMoney(int m)
+    {
+        user.setMoney(m);
+        string[] c = { "money" };
+        string[] v = { m.ToString() };
+        updateData("Char_info", c, v);
+    }
+    public void setUserSkills(int[] s)
+    {
+        user.setSkills(s);
+        string d = "";
+        for(int i = 0; i < s.Length; i++)
+        {
+            d += s[i].ToString();
+        }
+        string[] c = { "Skills" }, v = { d };
+        updateData("Char_info", c, v);
     }
 }

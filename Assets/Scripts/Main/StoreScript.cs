@@ -10,8 +10,10 @@ public class StoreScript : MonoBehaviour
     public Button perchase;
     public Text itemName, info, userMoney;
     public Data data;
+
+    private GameObject selected;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         for(int i = 0; i < items.Length; i++)
         {
@@ -42,7 +44,6 @@ public class StoreScript : MonoBehaviour
 
     public void onItemclick(Button button)
     {
-        Debug.Log(button.name);
         setItemInfos(data.getItemInfo(button.name));
         canBuy(data.getItemPrice(button.name), data.getUserMoney());
         for (int i = 0; i < items.Length; i++)
@@ -52,6 +53,7 @@ public class StoreScript : MonoBehaviour
         }
         button.transform.localScale = new Vector3(1.2f, 1.2f);
         button.enabled = false;
+        selected = button.gameObject;
     }
 
     private void canBuy(int price, int money) {
@@ -69,6 +71,11 @@ public class StoreScript : MonoBehaviour
 
     public void onPurchaseClicked()
     {
-
+        data.setUserMoney(data.getUserMoney() - data.getItemPrice(selected.name));
+        userMoney.text = data.getUserMoney().ToString();
+        selected.transform.localScale = new Vector3(1.0f, 1.0f);
+        selected.GetComponent<Button>().interactable = false;
+        List<string> tmp = new List<string> { "상점 주인", "감사합니다! 마을 사람들이 분명히 좋아할 겁니다!", "" };
+        setItemInfos(tmp);
     }
 }
