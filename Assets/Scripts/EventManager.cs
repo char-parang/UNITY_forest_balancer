@@ -7,6 +7,7 @@ public class EventManager : MonoBehaviour
 {
     private List<GameObject> holdingButton = new List<GameObject>();
     public AudioSource aud;
+    private bool scrTrig = false;
 
     void Update()
     {
@@ -21,8 +22,17 @@ public class EventManager : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
 
+        if (scrTrig)
+        {
+            Scrollable s = holdingButton[holdingButton.Count-1].GetComponent<Scrollable>();
+            if(s != null)
+            {
+                s.onScrolled(mousePos.x, mousePos.y);
+            }
+        }
         if(hit.collider != null && !holdingButton.Contains(hit.collider.gameObject))
         {
+            scrTrig = true;
             GameObject cur = hit.collider.gameObject;
             if (cur.GetComponent<Button>() != null)
                 if (!cur.GetComponent<Button>().interactable) return;
@@ -39,12 +49,12 @@ public class EventManager : MonoBehaviour
                     holdingButton.RemoveAt(0);
                 }
             }
-      
         }
     }
 
     private void mouseUp()
     {
+        scrTrig = false;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
