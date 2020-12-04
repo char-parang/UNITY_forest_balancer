@@ -18,7 +18,6 @@ public class StoreScript : MonoBehaviour
         for(int i = 0; i < items.Length; i++)
         {
             int prices = data.getItemPrice(items[i].name);
-            Debug.Log(items[i].transform.Find("priceText"));
             GameObject t = items[i].transform.Find("priceText").gameObject;
             t.GetComponent<Text>().text = prices.ToString();
         }
@@ -75,6 +74,7 @@ public class StoreScript : MonoBehaviour
         userMoney.text = data.getUserMoney().ToString();
         selected.transform.localScale = new Vector3(1.0f, 1.0f);
         selected.GetComponent<Button>().interactable = false;
+        perchase.interactable = false;
         List<string> tmp = new List<string> { "상점 주인", "감사합니다! 마을 사람들이 분명히 좋아할 겁니다!", "" };
         setItemInfos(tmp);
     }

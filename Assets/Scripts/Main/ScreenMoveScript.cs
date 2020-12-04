@@ -5,7 +5,7 @@ using UnityEngine;
 public class ScreenMoveScript : MonoBehaviour, Clickable
 {
     private bool moveTrig = false;
-    private GameObject screen1, screen2;
+    public GameObject screen1, screen2;
     private float movement;
     private bool cable = true;
 
@@ -20,8 +20,6 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
     // Start is called before the first frame update
     void Start()
     {
-        screen1 = GameObject.Find("MainScreen1");
-        screen2 = GameObject.Find("MainScreen2");
 
         switch (gameObject.name)
         {
