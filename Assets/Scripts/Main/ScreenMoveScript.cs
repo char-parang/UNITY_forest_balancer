@@ -26,7 +26,7 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
             case "right":
                 movement = -0.3f;
                 break;
-            case "left":
+            case "leftImage":
                 movement = 0.3f;
                 break;
         }
@@ -37,14 +37,14 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
     {
         if (moveTrig)
         {
-            if (gameObject.name == "left" && screen1.transform.position.x < 17.9 || gameObject.name == "right" && screen1.transform.position.x > 0.0)
+            if (gameObject.name == "leftImage" && screen1.transform.position.x < 17.9 || gameObject.name == "right" && screen1.transform.position.x > 0.0)
             {
                 screen1.transform.position = new Vector3(screen1.transform.position.x + movement, 0, 0);
                 screen2.transform.position = new Vector3(screen2.transform.position.x + movement, 0, 0);
             }
             else
             {
-                if (gameObject.name == "left") screen1.gameObject.SetActive(false);
+                if (gameObject.name == "leftImage") screen1.gameObject.SetActive(false);
                 else if (gameObject.name == "right") screen2.gameObject.SetActive(false);
                 moveTrig = false;
             }
