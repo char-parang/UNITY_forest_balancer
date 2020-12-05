@@ -141,7 +141,7 @@ public class Data : MonoBehaviour
 
         List<string> data = new List<string>();
         while (reader.Read())
-            for (int i = 0; i < columns.Length; i++) { data.Add(reader.GetString(i)); Debug.Log(columns[i]); }
+            for (int i = 0; i < columns.Length; i++) { data.Add(reader.GetString(i)); }
         dbconn.Close();
         return data;
     }
@@ -214,6 +214,10 @@ public class Data : MonoBehaviour
     public int[] getUserSkills()
     {
         return user.getSkills();
+    }
+    public int getUserMonth()
+    {
+        return user.getMonth();
     }
     public void setUserMoney(int m)
     {

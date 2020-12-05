@@ -15,7 +15,6 @@ public class SkillScript : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        Debug.Log(data.getUserMoney());
         userMoney.text = data.getUserMoney().ToString();
         setSkillNames();
         setSkillInfo();

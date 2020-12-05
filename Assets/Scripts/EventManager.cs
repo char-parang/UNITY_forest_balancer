@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EventManager : MonoBehaviour
 {
     private List<GameObject> holdingButton = new List<GameObject>();
+    public AudioSource aud;
+
     void Update()
     {
         if (Input.GetMouseButton(0)) mouseDown();
@@ -18,11 +21,15 @@ public class EventManager : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
 
-        if(hit.collider != null && holdingButton.IndexOf(GameObject.Find(hit.collider.gameObject.name)) < 0)
+        if(hit.collider != null && !holdingButton.Contains(hit.collider.gameObject))
         {
-            holdingButton.Add(GameObject.Find(hit.collider.gameObject.name));
+            GameObject cur = hit.collider.gameObject;
+            if (cur.GetComponent<Button>() != null)
+                if (!cur.GetComponent<Button>().interactable) return;
+            holdingButton.Add(hit.collider.gameObject);
             Animator anim = holdingButton[holdingButton.Count - 1].GetComponent<Animator>();
             anim.Play("scale_up");
+            aud.Play();
             if (holdingButton.Count > 1)
             {
                 for (int i = 0; i < holdingButton.Count - 1; i++)
