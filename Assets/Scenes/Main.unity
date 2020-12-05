@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 95077500}
   - component: {fileID: 95077499}
   m_Layer: 5
-  m_Name: barKey
+  m_Name: bgm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -893,7 +893,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3, y: -1}
+  m_AnchoredPosition: {x: 0.0000076294, y: -0.00000011921}
   m_SizeDelta: {x: 21.215706, y: 21.433075}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &95077497
@@ -1036,8 +1036,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 95077495}
   scrollBar: {fileID: 1675398743}
-  minPos: 90
-  maxPos: -87
+  target: {fileID: 1236014884}
+  minPos: -1
+  maxPos: 3.3
 --- !u!1 &95603185
 GameObject:
   m_ObjectHideFlags: 0
@@ -10911,7 +10912,7 @@ GameObject:
   - component: {fileID: 999212171}
   - component: {fileID: 999212170}
   m_Layer: 5
-  m_Name: barKey
+  m_Name: es
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10933,7 +10934,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.000023, y: -1}
+  m_AnchoredPosition: {x: -0.0000016689, y: 0.0000017881}
   m_SizeDelta: {x: 21.215706, y: 21.433075}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &999212168
@@ -11076,8 +11077,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 999212166}
   scrollBar: {fileID: 506505335}
-  minPos: 90
-  maxPos: -87
+  target: {fileID: 1812371308}
+  minPos: -1
+  maxPos: 3.3
 --- !u!1 &1007771648
 GameObject:
   m_ObjectHideFlags: 0
@@ -12843,7 +12845,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 948de350cefbe53459e8a1cffe60f272, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -19042,7 +19044,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 90fdf3f3357ec1e4d9f71cc410aceabe, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

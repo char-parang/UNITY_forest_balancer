@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EventManager : MonoBehaviour
+public class EventManager : MonoBehaviour, ScrollControlable
 {
     private List<GameObject> holdingButton = new List<GameObject>();
     public AudioSource aud;
     private bool scrTrig = false;
+    private AudioSource es;
+
+    void Start()
+    {
+        es = gameObject.GetComponent<AudioSource>();
+        es.volume = 0.5f;
+    }
 
     void Update()
     {
@@ -21,7 +28,12 @@ public class EventManager : MonoBehaviour
         Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
         RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
-
+        if (!scrTrig && hit.collider != null && hit.collider.GetComponent<Scrollable>() != null)
+        {
+            scrTrig = true;
+            holdingButton.Add(hit.collider.gameObject);
+            aud.Play();
+        }
         if (scrTrig)
         {
             Scrollable s = holdingButton[holdingButton.Count-1].GetComponent<Scrollable>();
@@ -30,9 +42,9 @@ public class EventManager : MonoBehaviour
                 s.onScrolled(mousePos.x, mousePos.y);
             }
         }
-        if(hit.collider != null && !holdingButton.Contains(hit.collider.gameObject))
+
+        if(!scrTrig && hit.collider != null && !holdingButton.Contains(hit.collider.gameObject))
         {
-            scrTrig = true;
             GameObject cur = hit.collider.gameObject;
             if (cur.GetComponent<Button>() != null)
                 if (!cur.GetComponent<Button>().interactable) return;
@@ -68,11 +80,16 @@ public class EventManager : MonoBehaviour
             {
                 Clickable ca = holdingButton[holdingButton.Count - 1].GetComponent<Clickable>();
                 ca.onClicked();
-                holdingButton.RemoveAt(holdingButton.Count - 1);
             }
+            holdingButton.RemoveAt(holdingButton.Count - 1);
         }
 
         
         /*else holdingButton.Clear();*/
+    }
+
+    public void setAmount(float ratio)
+    {
+        es.volume = ratio;
     }
 }
