@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, ScrollControlable
 {
     public GameObject[] popups;
     private GameObject[] clickables;
+    private AudioSource bgm;
     // Start is called before the first frame update
     void Start()
     {
         onMainScreenStart();
+        bgm = gameObject.GetComponent<AudioSource>();
+        bgm.volume = 0.5f;
     }
 
     // Update is called once per frame
@@ -43,4 +46,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void setAmount(float ratio)
+    {
+        bgm.volume = ratio;
+    }
 }
