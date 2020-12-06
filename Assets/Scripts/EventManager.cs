@@ -32,6 +32,8 @@ public class EventManager : MonoBehaviour, ScrollControlable
         {
             scrTrig = true;
             holdingButton.Add(hit.collider.gameObject);
+            Animator anim = holdingButton[holdingButton.Count - 1].GetComponent<Animator>();
+            anim.Play("scale_up");
             aud.Play();
         }
         if (scrTrig)
