@@ -1,4 +1,4 @@
 ﻿public interface ScrollControlable
 {
-    void setAmount(float ratio);
+    void setAmount(float ratio, string code);
 }

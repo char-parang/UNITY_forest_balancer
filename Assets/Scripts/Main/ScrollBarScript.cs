@@ -39,12 +39,11 @@ public class ScrollBarScript : MonoBehaviour, Clickable, Scrollable
             gameObject.transform.position = new Vector3(x, gameObject.transform.position.y, gameObject.transform.position.z);
             Image img = scrollBar.GetComponent<Image>();
             img.fillAmount = (x - minPos) / (maxPos - minPos);
-            target.GetComponent<ScrollControlable>().setAmount((x - minPos) / (maxPos - minPos));
+            target.GetComponent<ScrollControlable>().setAmount((x - minPos) / (maxPos - minPos), gameObject.name);
         }
     }
 
     void OnEnable()
     {
-
     }
 }

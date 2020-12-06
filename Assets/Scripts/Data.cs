@@ -44,6 +44,9 @@ public class Data : MonoBehaviour
         {
             return money;
         }
+        public int getForest(char who) {
+            return forest.getSomething(who);
+        }
     };
     private class FOREST
     {
@@ -65,6 +68,23 @@ public class Data : MonoBehaviour
                     wolf = i;
                     break;
             }
+        }
+        public int getSomething(char who)
+        {
+            switch (who)
+            {
+                case 'f':
+                    return farmer;
+                case 't':
+                    return tree;
+                case 'd':
+                    return deer;
+                case 'w':
+                    return wolf;
+                default:
+                    return 0;
+            }
+            
         }
     }
     private class SATISFY
@@ -218,6 +238,10 @@ public class Data : MonoBehaviour
     public int getUserMonth()
     {
         return user.getMonth();
+    }
+    public int getUserField()
+    {
+        return user.getForest('f');
     }
     public void setUserMoney(int m)
     {
