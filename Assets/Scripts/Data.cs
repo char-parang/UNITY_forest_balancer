@@ -74,16 +74,12 @@ public class Data : MonoBehaviour
             switch (who)
             {
                 case 'f':
-                    Debug.Log(who + ": " + farmer);
                     return farmer;
                 case 't':
-                    Debug.Log(who + ": " + tree);
                     return tree;
                 case 'd':
-                    Debug.Log(who + ": " + deer);
                     return deer;
                 case 'w':
-                    Debug.Log(who + ": " + wolf);
                     return wolf;
                 default:
                     return 0;

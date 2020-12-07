@@ -7,7 +7,16 @@ public class OpfundScript : MonoBehaviour, Clickable
 {
     public Button[] toggle;
     public PlanPreprocScript preproc;
+    public Data data;
 
+    public void OnEnable()
+    {
+        int money = data.getUserMoney();
+        for(int i = 0; i < toggle.Length; i++)
+        {
+            //있는 돈 만큼
+        }
+    }
 
     public void onClicked()
     {

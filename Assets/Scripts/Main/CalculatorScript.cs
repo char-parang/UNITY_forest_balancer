@@ -5,29 +5,34 @@ using UnityEngine;
 
 public class CalculatorScript : MonoBehaviour
 {
-    public void calculNum(out int[] res, int[] cur, int[] harv)
+    public void calculNum(out int[] res, int[] cur, int[] harv, int money)
     {
         int[] result = new int[4];
         // 수확
-        int farm = cur[0] * 100;
-        int wood = cur[1] - harv[1];
-        int deer = cur[2] - harv[2];
-        int wolf = cur[3] - harv[3];
+        float farm = cur[0] * 100;
+        float wood = cur[1] - harv[1];
+        float deer = cur[2] - harv[2];
+        float wolf = cur[3] - harv[3];
 
         // 천적관계에 의한 감소
-        wood -= Convert.ToInt32(0.1f * deer);
-        deer -= Convert.ToInt32((0.1f * wolf > wood * 0.3) ? 0.1f * wolf : wood * 0.3);
-        wolf = Convert.ToInt32((wolf > deer * 0.8f) ? deer * 0.8f : wolf);
+        wood -= 0.3f * deer;
+        deer -= 0.2f * wolf;
+        deer = (deer > wood * 0.4f) ? wood * 0.4f : deer;
+        wolf = (wolf > deer * 0.4f) ? deer * 0.4f : wolf;
 
         // 회복에 의한 증가
-        wood += Convert.ToInt32(wood * 0.2f);
-        deer += Convert.ToInt32(deer * 0.3f);
-        wolf += Convert.ToInt32(wolf * 0.3f);
+        wood += wood * 0.1f;
+        deer += deer * 0.4f;
+        wolf += wolf * 0.2f;
 
-        result[0] = farm;
-        result[1] = wood;
-        result[2] = deer;
-        result[3] = wolf;
+        float x = 1;
+        if (money > 0)
+            x = money * 2 / 100;
+
+        result[0] = Convert.ToInt32(farm * x);
+        result[1] = Convert.ToInt32(wood * x);
+        result[2] = Convert.ToInt32(deer * x);
+        result[3] = Convert.ToInt32(wolf * x);
 
         res = result;
     }

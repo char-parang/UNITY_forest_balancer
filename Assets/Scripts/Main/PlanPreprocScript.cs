@@ -17,7 +17,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     private GameObject satPredict;
     private CalculatorScript calculator;
     private int[] skills, forestNums;
-    private int MAX_HARV_WOOD = 500, MAX_HARV_DEER = 100, MAX_HARV_WOLF = 40;
+    private int MAX_HARV_WOOD = 1000, MAX_HARV_DEER = 150, MAX_HARV_WOLF = 40;
 
     public void OnEnable()
     {
@@ -35,7 +35,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         numHarv[0] = Convert.ToInt32(forestNums[0] / 24.0f);
         farmBar.fillAmount = numHarv[0];
         int[] calcul = new int[4];
-        calculator.calculNum(out calcul, forestNums, numHarv);
+        calculator.calculNum(out calcul, forestNums, numHarv, fund);
         drawPredict(calcul);
     }
     public void setAmount(float r, string code)
@@ -54,7 +54,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         }
         int[] calcul = new int[3];
         int[] current = { forestNums[1], forestNums[2], forestNums[3] };
-        calculator.calculNum(out calcul, data.getUserForestUnits(), numHarv);
+        calculator.calculNum(out calcul, data.getUserForestUnits(), numHarv, fund);
         drawPredict(calcul);
     }
 
@@ -64,9 +64,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         {
             Text t = numPredict.transform.GetChild(i).Find("Text").GetComponent<Text>();
             Debug.Log(calcul[1] + ": " + forestNums[1]);
-            if (calcul[i] > forestNums[i]* 2) t.text = ">>";
+            if (calcul[i] > forestNums[i]* 1.2) t.text = ">>";
             else if (calcul[i] > forestNums[i]) t.text = ">";
-            else if (forestNums[i] > calcul[i] * 2) t.text = "<<";
+            else if (forestNums[i] > calcul[i] * 1.2) t.text = "<<";
             else if (forestNums[i] > calcul[i]) t.text = "<";
             else t.text = "|";
         }
@@ -74,6 +74,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
 
     public void setFund(int f)
     {
-        doPlan.setFund(f);
+        fund = f;
+        int[] calcul = new int[4];
+        calculator.calculNum(out calcul, forestNums, numHarv, fund);
+        drawPredict(calcul);
     }
 }
