@@ -74,12 +74,16 @@ public class Data : MonoBehaviour
             switch (who)
             {
                 case 'f':
+                    Debug.Log(who + ": " + farmer);
                     return farmer;
                 case 't':
+                    Debug.Log(who + ": " + tree);
                     return tree;
                 case 'd':
+                    Debug.Log(who + ": " + deer);
                     return deer;
                 case 'w':
+                    Debug.Log(who + ": " + wolf);
                     return wolf;
                 default:
                     return 0;
@@ -239,9 +243,14 @@ public class Data : MonoBehaviour
     {
         return user.getMonth();
     }
-    public int getUserField()
+    public int[] getUserForestUnits()
     {
-        return user.getForest('f');
+        int[] f = new int[4];
+        f[0] = user.getForest('f'); 
+        f[1] = user.getForest('t');
+        f[2] = user.getForest('d');
+        f[3] = user.getForest('w');
+        return f;
     }
     public void setUserMoney(int m)
     {
