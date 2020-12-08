@@ -90,7 +90,7 @@ public class EventManager : MonoBehaviour, ScrollControlable
         /*else holdingButton.Clear();*/
     }
 
-    public void setAmount(float ratio)
+    public void setAmount(float ratio, string code)
     {
         es.volume = ratio;
     }

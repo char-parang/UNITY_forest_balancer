@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour, ScrollControlable
         }
     }
 
-    public void setAmount(float ratio)
+    public void setAmount(float ratio, string code)
     {
         bgm.volume = ratio;
     }

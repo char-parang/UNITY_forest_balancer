@@ -10,7 +10,7 @@ public class CloseButtonScript : MonoBehaviour, Clickable
     public void onClicked()
     {
         gm.setOtherClickable(true);
-        GameObject parent = this.transform.parent.transform.GetChild(0).gameObject;
+        GameObject parent = this.transform.parent.transform.GetChild(1).gameObject;
         for (int i = 0; i < parent.transform.childCount; i++)
         {
             parent.transform.GetChild(i).gameObject.SetActive(false);
