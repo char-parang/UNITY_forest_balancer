@@ -9,6 +9,7 @@ public class Data : MonoBehaviour
 {
     protected class USER {
         int[] skills = new int[4];
+        int[] needs = new int[4];
         int month, money;
         FOREST forest = new FOREST();
         SATISFY sat = new SATISFY();
@@ -32,6 +33,10 @@ public class Data : MonoBehaviour
         {
             sat.setSomething(who, i);
         }
+        public void setNeeds(int[] n)
+        {
+            needs = n;
+        }
         public int[] getSkills()
         {
             return skills;
@@ -46,6 +51,14 @@ public class Data : MonoBehaviour
         }
         public int getForest(char who) {
             return forest.getSomething(who);
+        }
+        public int[] getSats()
+        {
+            return sat.getSat();
+        }
+        public int[] getNeeds()
+        {
+            return needs;
         }
     };
     private class FOREST
@@ -108,6 +121,11 @@ public class Data : MonoBehaviour
                     break;
             }
         }
+        public int[] getSat()
+        {
+            int[] s = { farmer, tree, deer, wolf };
+            return s;
+        }
     }
 
     private USER user = new USER();
@@ -115,7 +133,7 @@ public class Data : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money" };
+        string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money", "needs" };
         List<string> d = selectData(cols, "Char_info");
         if (d.Count < 1)
         {
@@ -140,6 +158,10 @@ public class Data : MonoBehaviour
         user.setSat('w', Int32.Parse(d[8]));
         user.setMonth(Int32.Parse(d[9]));
         user.setMoney(Int32.Parse(d[10]));
+        int[] tmp = new int[4];
+        for (int i = 0; i < 4; i++)
+            tmp[i] = Int32.Parse(d[11][i].ToString());
+        user.setNeeds(tmp);
     }
 
     public List<string> selectData(string[] columns, string table, string where=null)
@@ -248,6 +270,10 @@ public class Data : MonoBehaviour
         f[3] = user.getForest('w');
         return f;
     }
+    public int[] getSats()
+    {
+        return user.getSats();
+    }
     public void setUserMoney(int m)
     {
         user.setMoney(m);
@@ -265,5 +291,9 @@ public class Data : MonoBehaviour
         }
         string[] c = { "Skills" }, v = { d };
         updateData("Char_info", c, v);
+    }
+    public int[] getUserNeeds()
+    {
+        return user.getNeeds();
     }
 }

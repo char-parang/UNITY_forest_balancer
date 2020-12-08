@@ -7,7 +7,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
 {
 
     private int fund;
-    private float[] ratio;
+    private int[] num, sat;
     public GameManager gm;
     public GameObject plan;
 
@@ -27,8 +27,12 @@ public class DoPlanScript : MonoBehaviour, Clickable
         fund = f;
         gameObject.GetComponent<Button>().interactable = true;
     }
-    public void setRatio(float[] r)
+    public void setNum(int[] n)
     {
-        ratio = r;
+        num = n;
+    }
+    public void setSat(int[] s)
+    {
+        sat = s;
     }
 }

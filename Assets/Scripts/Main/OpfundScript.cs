@@ -9,9 +9,12 @@ public class OpfundScript : MonoBehaviour, Clickable
     public PlanPreprocScript preproc;
     public Data data;
     private int thisButton = 0;
+    private Outline outline;
 
     public void OnEnable()
     {
+        outline = GetComponent<Outline>();
+        outline.enabled = false;
         int money = data.getUserMoney();
         switch (gameObject.name)
         {
@@ -19,13 +22,13 @@ public class OpfundScript : MonoBehaviour, Clickable
                 thisButton = 0;
                 break;
             case "three":
-                thisButton = 30;
+                thisButton = 300;
                 break;
             case "six":
-                thisButton = 60;
+                thisButton = 600;
                 break;
             case "twenty":
-                thisButton = 90;
+                thisButton = 900;
                 break;
         }
         if (money >= thisButton)
@@ -40,11 +43,13 @@ public class OpfundScript : MonoBehaviour, Clickable
         {
             if (data.getUserMoney() >= toggle[i].GetComponent<OpfundScript>().getThisButtonPrice())
                 toggle[i].interactable = true;
+            toggle[i].GetComponent<Outline>().enabled = false;
         }
         int fund = thisButton;
         
         preproc.setFund(fund);
         gameObject.GetComponent<Button>().interactable = false;
+        outline.enabled = true;
     }
 
     public int getThisButtonPrice()

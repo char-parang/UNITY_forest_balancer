@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScrollBarScript : MonoBehaviour, Clickable, Scrollable
 {
     public GameObject scrollBar;
-    public GameObject target;
+    public GameObject target, needs;
     public float minPos, maxPos;
     private bool isXcoord = true;
 
