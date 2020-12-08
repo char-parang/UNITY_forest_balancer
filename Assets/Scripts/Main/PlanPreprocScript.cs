@@ -10,11 +10,10 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     private int fund = 0;
     private int[] numHarv = new int[4];
     public Data data;
-    public DoPlanScript doPlan;
     public Image farmBar;
+    public DoPlanScript doplan;
     public GameObject resultPredict;
-    private GameObject numPredict;
-    private GameObject satPredict;
+    private GameObject numPredict, satPredict;
     private CalculatorScript calculator;
     private int[] skills, forestNums;
     private int MAX_HARV_WOOD = 1000, MAX_HARV_DEER = 150, MAX_HARV_WOLF = 40;
@@ -33,7 +32,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
             t.text = "?";
         }
         numHarv[0] = Convert.ToInt32(forestNums[0] / 24.0f);
-        farmBar.fillAmount = numHarv[0];
+        farmBar.fillAmount = forestNums[0] / 24.0f;
         int[] calcul = new int[4];
         calculator.calculNum(out calcul, forestNums, numHarv, fund);
         drawPredict(calcul);
@@ -52,8 +51,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
                 numHarv[3] = Convert.ToInt32(r * MAX_HARV_WOLF);
                 break;
         }
-        int[] calcul = new int[3];
-        int[] current = { forestNums[1], forestNums[2], forestNums[3] };
+        int[] calcul;
         calculator.calculNum(out calcul, data.getUserForestUnits(), numHarv, fund);
         drawPredict(calcul);
     }
@@ -63,9 +61,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         for(int i = 0; i < calcul.Length; i++)
         {
             Text t = numPredict.transform.GetChild(i).Find("Text").GetComponent<Text>();
-            Debug.Log(calcul[1] + ": " + forestNums[1]);
-            if (calcul[i] > forestNums[i]* 1.2) t.text = ">>";
+            if (calcul[i] > forestNums[i] * 1.2) t.text = ">>";
             else if (calcul[i] > forestNums[i]) t.text = ">";
+            else if (calcul[i] <= 0) t.text = "X";
             else if (forestNums[i] > calcul[i] * 1.2) t.text = "<<";
             else if (forestNums[i] > calcul[i]) t.text = "<";
             else t.text = "|";
@@ -78,5 +76,6 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         int[] calcul = new int[4];
         calculator.calculNum(out calcul, forestNums, numHarv, fund);
         drawPredict(calcul);
+        doplan.setFund(f);
     }
 }

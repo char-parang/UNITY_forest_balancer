@@ -8,39 +8,47 @@ public class OpfundScript : MonoBehaviour, Clickable
     public Button[] toggle;
     public PlanPreprocScript preproc;
     public Data data;
+    private int thisButton = 0;
 
     public void OnEnable()
     {
         int money = data.getUserMoney();
-        for(int i = 0; i < toggle.Length; i++)
+        switch (gameObject.name)
         {
-            //있는 돈 만큼
+            case "zero":
+                thisButton = 0;
+                break;
+            case "three":
+                thisButton = 30;
+                break;
+            case "six":
+                thisButton = 60;
+                break;
+            case "twenty":
+                thisButton = 90;
+                break;
         }
+        if (money >= thisButton)
+            gameObject.GetComponent<Button>().interactable = true;
+        else
+            gameObject.GetComponent<Button>().interactable = false;
     }
 
     public void onClicked()
     {
         for (int i = 0; i < toggle.Length; i++)
         {
-            toggle[i].interactable = true;
+            if (data.getUserMoney() >= toggle[i].GetComponent<OpfundScript>().getThisButtonPrice())
+                toggle[i].interactable = true;
         }
-        int fund = 0;
-        switch (gameObject.name)
-        {
-            case "three":
-                fund = 30;
-                break;
-            case "six":
-                fund = 60;
-                break;
-            case "twenty":
-                fund = 120;
-                break;
-            case "eighteen":
-                fund = 180;
-                break;
-        }
+        int fund = thisButton;
+        
         preproc.setFund(fund);
         gameObject.GetComponent<Button>().interactable = false;
+    }
+
+    public int getThisButtonPrice()
+    {
+        return thisButton;
     }
 }

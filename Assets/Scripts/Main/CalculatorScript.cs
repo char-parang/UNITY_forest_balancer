@@ -18,21 +18,18 @@ public class CalculatorScript : MonoBehaviour
         wood -= 0.3f * deer;
         deer -= 0.2f * wolf;
         deer = (deer > wood * 0.4f) ? wood * 0.4f : deer;
-        wolf = (wolf > deer * 0.4f) ? deer * 0.4f : wolf;
+        wolf = (wolf > deer * 0.3f) ? deer * 0.3f : wolf;
 
         // 회복에 의한 증가
         wood += wood * 0.1f;
         deer += deer * 0.4f;
         wolf += wolf * 0.2f;
 
-        float x = 1;
-        if (money > 0)
-            x = money * 2 / 100;
 
-        result[0] = Convert.ToInt32(farm * x);
-        result[1] = Convert.ToInt32(wood * x);
-        result[2] = Convert.ToInt32(deer * x);
-        result[3] = Convert.ToInt32(wolf * x);
+        result[0] = Convert.ToInt32(farm + money);
+        result[1] = Convert.ToInt32(wood + money);
+        result[2] = Convert.ToInt32(deer + deer * money / 300);
+        result[3] = Convert.ToInt32(wolf + wolf * money / 300);
 
         res = result;
     }
