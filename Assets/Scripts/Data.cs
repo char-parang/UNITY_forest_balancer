@@ -61,6 +61,8 @@ public class Data : MonoBehaviour
             return needs;
         }
     };
+
+
     private class FOREST
     {
         int farmer, tree, deer, wolf;
@@ -188,6 +190,11 @@ public class Data : MonoBehaviour
         return data;
     }
 
+    public List<string> getWorkScipt()
+    {
+
+    }
+
     public List<string> getItemInfo(string itemName)
     {
         string[] cols = { "Name", "Info", "Effect_info", "soldout" };
@@ -295,5 +302,26 @@ public class Data : MonoBehaviour
     public int[] getUserNeeds()
     {
         return user.getNeeds();
+    }
+    internal void setSatisfy(int[] sat)
+    {
+        user.setSat('f', sat[0]);
+        user.setSat('t', sat[1]);
+        user.setSat('d', sat[2]);
+        user.setSat('w', sat[3]);
+
+        string[] c = { "sat_Farmer", "sat_Wood", "sat_Deer", "sat_Wolf" }, v = { sat[0].ToString(), sat[1].ToString(), sat[2].ToString(), sat[3].ToString()};
+        updateData("Char_info", c, v);
+    }
+
+    internal void setForestUnits(int[] num)
+    {
+        user.setForest('f', num[0] / 100);
+        user.setForest('t', num[1]);
+        user.setForest('d', num[2]);
+        user.setForest('w', num[3]);
+
+        string[] c = {"Filds", "num_Tree", "num_Deer", "num_Wolf" }, v = { (num[0]/100).ToString(), num[1].ToString(), num[2].ToString(), num[3].ToString() };
+        updateData("Char_info", c, v);
     }
 }
