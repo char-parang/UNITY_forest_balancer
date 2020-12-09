@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class DoPlanScript : MonoBehaviour, Clickable
 {
 
-    private int money, fund;
-    private int[] num, sat;
+    private int fund;
+    private int[] num, sat, income = new int[4];
     public GameManager gm;
     public GameObject plan;
     public Data data;
@@ -23,7 +23,10 @@ public class DoPlanScript : MonoBehaviour, Clickable
     {
         data.setUserMoney(data.getUserMoney() - fund);
         bool[] p = calculFail();
-        anim.GetComponent<DoPlanAnimationScript>().setFail(p);
+        DoPlanAnimationScript animscript = anim.GetComponent<DoPlanAnimationScript>();
+        animscript.setFail(p);
+        animscript.setNums(num);
+        animscript.setMoney(income);
 
         for(int i = 0; i < 4; i++)
         {
@@ -31,10 +34,13 @@ public class DoPlanScript : MonoBehaviour, Clickable
             {
                 num[i] -= Convert.ToInt32(num[i] * 0.3f);
                 sat[i] -= Convert.ToInt32(sat[i] * 0.1f);
-                money -= Convert.ToInt32(money * 0.2f);
+                income[i] -= Convert.ToInt32(income[i] * 0.2f);
             }
         }
-        data.setUserMoney(data.getUserMoney() + money);
+        int m = 0;
+        for (int i = 0; i < income.Length; i++)
+            m += income[i];
+        data.setUserMoney(data.getUserMoney() + m);
         data.setForestUnits(num);
         data.setSatisfy(sat);
 
@@ -67,9 +73,9 @@ public class DoPlanScript : MonoBehaviour, Clickable
     {
         sat = s;
     }
-    public void setAddMoney(int m)
+    public void setAddMoney(int[] m)
     {
-        money = m;
+        income = m;
     }
     public void setfund(int f)
     {

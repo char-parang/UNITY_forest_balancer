@@ -20,6 +20,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     private int[] skills, forestNums;
     private int MAX_HARV_WOOD = 1000, MAX_HARV_DEER = 150, MAX_HARV_WOLF = 40;
     private int[] needs;
+    private int[] income;
 
     public void OnEnable()
     {
@@ -58,8 +59,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         doplan.setSat(calcul);
         drawPredict(t);
 
-        int m = calculator.calculMoney(numHarv, 0);
+        int m = calculator.calculMoney(out income, numHarv, 0);
         moneyPredict.text = m.ToString() + "G";
+        doplan.setAddMoney(income);
     }
     public void setAmount(float r, string code)
     {
@@ -85,9 +87,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         doplan.setSat(calcul);
         drawPredict(t);
 
-        int m = Convert.ToInt32(calculator.calculMoney(numHarv, 0) * 0.2);
+        int m = Convert.ToInt32(calculator.calculMoney(out income, numHarv, 0) * 0.2);
         moneyPredict.text = m.ToString() + "G";
-        doplan.setAddMoney(m);
+        doplan.setAddMoney(income);
     }
 
     private void drawPredict(int[] calcul)

@@ -10,6 +10,9 @@ public class DoPlanAnimationScript : MonoBehaviour
     Animator animator;
     private bool finish;
     private GameObject obj;
+    public Data data;
+    private int[] nums;
+    private int[] money;
 
     public void OnEnable()
     {
@@ -37,6 +40,7 @@ public class DoPlanAnimationScript : MonoBehaviour
     {
         obj = gameObject.transform.Find(animName).gameObject;
         Text t = obj.transform.Find("Text").GetComponent<Text>();
+        t.text = data.getRandomWorkScipt(1, idx);
         animator = obj.GetComponent<Animator>();
         obj.SetActive(true);
         animator.Play(animName);
@@ -46,14 +50,25 @@ public class DoPlanAnimationScript : MonoBehaviour
     private IEnumerator waitFinishFirst(float a, string animName, int idx)
     {
         yield return new WaitForSeconds(a);
-        if (fails[idx]) animator.Play(animName + "_fail");
-        else animator.Play(animName);
+        obj = gameObject.transform.Find(animName).gameObject;
+        Text t = obj.transform.Find("Text").GetComponent<Text>();
+        if (fails[idx])
+        {
+            animator.Play(animName + "_fail");
+            string[] tmp = data.getRandomWorkScipt(3, idx).Split(';');
+            t.text = tmp[0] + nums[idx] + tmp[1] + money[idx] + tmp[2];
+        }
+        else
+        {
+            animator.Play(animName+"_again");
+            string[] tmp = data.getRandomWorkScipt(2, idx).Split(';');
+            t.text = tmp[0] + nums[idx] + tmp[1] + money[idx] + tmp[2];
+        }
         StartCoroutine(waitFinishSecond(3, animName));
     }
 
     private IEnumerator waitFinishSecond(float a, string animName)
     {
-        Debug.Log("E");
         yield return new WaitForSeconds(a);
         obj = gameObject.transform.Find(animName).gameObject;
         obj.SetActive(false);
@@ -63,6 +78,16 @@ public class DoPlanAnimationScript : MonoBehaviour
     {
         yield return new WaitForSeconds(6*idx);
         drawAnim(animName, idx);
+    }
+
+    public void setNums(int[] n)
+    {
+        nums = n;
+    }
+
+    public void setMoney(int[] m)
+    {
+        money = m;
     }
 
 }

@@ -61,8 +61,6 @@ public class Data : MonoBehaviour
             return needs;
         }
     };
-
-
     private class FOREST
     {
         int farmer, tree, deer, wolf;
@@ -131,9 +129,68 @@ public class Data : MonoBehaviour
     }
 
     private USER user = new USER();
+    //List<string> goWorkScript, workSucScript, workFailScript;
+    List<string>[] goWorkScript = new List<string>[4], workSucScript = new List<string>[4], workFailScript = new List<string>[4];
 
     // Start is called before the first frame update
     void Start()
+    {
+        userInit();
+        scriptInit();
+    }
+
+    private void scriptInit()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            goWorkScript[i] = new List<string>();
+            workSucScript[i] = new List<string>();
+            workFailScript[i] = new List<string>();
+        }
+
+        string[] c = { "farmer", "wood", "deer", "wolf" };
+        List<string> data = selectData(c, "workScript", "code='1'");
+        for(int i = 0; i< data.Count; i++)
+        {
+            if (i % 4 == 0)
+                goWorkScript[0].Add(data[i]);
+            else if (i % 4 == 1)
+                goWorkScript[1].Add(data[i]);
+            else if (i % 4 == 2)
+                goWorkScript[2].Add(data[i]);
+            else
+                goWorkScript[3].Add(data[i]);
+        }
+
+
+        data = selectData(c, "workScript", "code=2");
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (i % 4 == 0)
+                workSucScript[0].Add(data[i]);
+            else if (i % 4 == 1)
+                workSucScript[1].Add(data[i]);
+            else if (i % 4 == 2)
+                workSucScript[2].Add(data[i]);
+            else
+                workSucScript[3].Add(data[i]);
+        }
+
+        data = selectData(c, "workScript", "code=3");
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (i % 4 == 0)
+                workFailScript[0].Add(data[i]);
+            else if (i % 4 == 1)
+                workFailScript[1].Add(data[i]);
+            else if (i % 4 == 2)
+                workFailScript[2].Add(data[i]);
+            else
+                workFailScript[3].Add(data[i]);
+        }
+    }
+
+    private void userInit()
     {
         string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money", "needs" };
         List<string> d = selectData(cols, "Char_info");
@@ -149,7 +206,7 @@ public class Data : MonoBehaviour
         {
             int a = Int32.Parse(d[1][i].ToString());
             data[i] = a;
-        } 
+        }
         user.setSkills(data);
         user.setForest('t', Int32.Parse(d[2]));
         user.setForest('d', Int32.Parse(d[3]));
@@ -190,9 +247,13 @@ public class Data : MonoBehaviour
         return data;
     }
 
-    public List<string> getWorkScipt()
+    public string getRandomWorkScipt(int code, int idx)
     {
-
+        string result = "";
+        if (code == 1) result = goWorkScript[idx][UnityEngine.Random.Range(0, goWorkScript[idx].Count - 1)];
+        else if (code == 2) result = workSucScript[idx][UnityEngine.Random.Range(0, workSucScript[idx].Count - 1)];
+        else if (code == 3) result = workFailScript[idx][UnityEngine.Random.Range(0, workFailScript[idx].Count - 1)];
+        return result;
     }
 
     public List<string> getItemInfo(string itemName)

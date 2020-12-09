@@ -105,13 +105,17 @@ public class CalculatorScript : MonoBehaviour
         needs = result;
     }
 
-    public int calculMoney(int[] harv, int skillBuf)
+    public int calculMoney(out int[] money, int[] harv, int skillBuf)
     {
         int sum = 0;
-        sum += harv[0] * 1;
-        sum += harv[1] * 1;
-        sum += harv[2] * 5;
-        sum += harv[3] * 15;
+        int[] tmp = new int[4];
+        tmp[0] = harv[0] * 1;
+        tmp[1] = harv[1] * 1;
+        tmp[2] = harv[2] * 5;
+        tmp[3] = harv[3] * 15;
+        for (int i = 0; i < 4; i++)
+            sum += tmp[i];
+        money = tmp;
         return sum;
     }
 }
