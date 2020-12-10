@@ -6,12 +6,12 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
 {
     private bool moveTrig = false;
     public GameObject screen1, screen2, other;
+    public GameObject remainNum;
     private float movement;
     private bool cable = true;
 
     public void onClicked()
     {
-        Debug.Log(gameObject.name);
         screen1.SetActive(true);
         screen2.SetActive(true);
         moveTrig = true;
@@ -20,12 +20,13 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
     // Start is called before the first frame update
     void Start()
     {
-
         switch (gameObject.name)
         {
             case "screenMoveButtonRight":
                 movement = -0.3f;
                 gameObject.SetActive(false);
+                screen2.SetActive(false);
+                remainNum.SetActive(false);
                 break;
             case "screenMoveButtonLeft":
                 gameObject.SetActive(true);
@@ -50,12 +51,14 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
                 {
                     gameObject.SetActive(false);
                     screen1.gameObject.SetActive(false);
+                    remainNum.SetActive(true);
                     other.SetActive(true);
                 }
                 else if (gameObject.name == "screenMoveButtonRight")
                 {
                     gameObject.SetActive(false);
                     screen2.gameObject.SetActive(false);
+                    remainNum.SetActive(false);
                     other.SetActive(true);
                 }
                 moveTrig = false;

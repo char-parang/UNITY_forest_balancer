@@ -37,6 +37,10 @@ public class Data : MonoBehaviour
         {
             needs = n;
         }
+        public void setFieldStatus(string s)
+        {
+            forest.setFstatus(s);
+        }
         public int[] getSkills()
         {
             return skills;
@@ -60,10 +64,15 @@ public class Data : MonoBehaviour
         {
             return needs;
         }
+        public string getFieldStatus()
+        {
+            return forest.getFstatus();
+        }
     };
     private class FOREST
     {
         int farmer, tree, deer, wolf;
+        string fieldStatus = "000000000000";
         public void setSomething(char who, int i)
         {
             switch (who)
@@ -82,6 +91,10 @@ public class Data : MonoBehaviour
                     break;
             }
         }
+        public void setFstatus(string s)
+        {
+            fieldStatus = s;
+        }
         public int getSomething(char who)
         {
             switch (who)
@@ -98,6 +111,10 @@ public class Data : MonoBehaviour
                     return 0;
             }
             
+        }
+        public string getFstatus()
+        {
+            return fieldStatus;
         }
     }
     private class SATISFY
@@ -192,7 +209,7 @@ public class Data : MonoBehaviour
 
     private void userInit()
     {
-        string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money", "needs" };
+        string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money", "needs", "FieldStatus" };
         List<string> d = selectData(cols, "Char_info");
         if (d.Count < 1)
         {
@@ -221,6 +238,7 @@ public class Data : MonoBehaviour
         for (int i = 0; i < 4; i++)
             tmp[i] = Int32.Parse(d[11][i].ToString());
         user.setNeeds(tmp);
+        user.setFieldStatus(d[12]);
     }
 
     public List<string> selectData(string[] columns, string table, string where=null)
@@ -364,6 +382,10 @@ public class Data : MonoBehaviour
     {
         return user.getNeeds();
     }
+    public string getFieldStatus()
+    {
+        return user.getFieldStatus();
+    }
     internal void setSatisfy(int[] sat)
     {
         user.setSat('f', sat[0]);
@@ -383,6 +405,14 @@ public class Data : MonoBehaviour
         user.setForest('w', num[3]);
 
         string[] c = {"Filds", "num_Tree", "num_Deer", "num_Wolf" }, v = { (num[0]/100).ToString(), num[1].ToString(), num[2].ToString(), num[3].ToString() };
+        updateData("Char_info", c, v);
+    }
+
+    public void setFieldStatus(string s, int i)
+    {
+        user.setForest('f', i);
+        user.setFieldStatus(s);
+        string[] c = { "FieldStatus", "Filds" }, v = { s, i.ToString() };
         updateData("Char_info", c, v);
     }
 }
