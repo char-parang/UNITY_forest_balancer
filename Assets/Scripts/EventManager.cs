@@ -33,7 +33,7 @@ public class EventManager : MonoBehaviour, ScrollControlable
             scrTrig = true;
             holdingButton.Add(hit.collider.gameObject);
             Animator anim = holdingButton[holdingButton.Count - 1].GetComponent<Animator>();
-            anim.Play("scale_up");
+            anim.SetBool("hold", true);
             aud.Play();
         }
         if (scrTrig)
@@ -52,14 +52,14 @@ public class EventManager : MonoBehaviour, ScrollControlable
                 if (!cur.GetComponent<Button>().interactable) return;
             holdingButton.Add(hit.collider.gameObject);
             Animator anim = holdingButton[holdingButton.Count - 1].GetComponent<Animator>();
-            anim.Play("scale_up");
+            anim.SetBool("hold", true);
             aud.Play();
             if (holdingButton.Count > 1)
             {
                 for (int i = 0; i < holdingButton.Count - 1; i++)
                 {
                     anim = holdingButton[0].GetComponent<Animator>();
-                    anim.Play("scale_down");
+                    anim.SetBool("hold", false);
                     holdingButton.RemoveAt(0);
                 }
             }
@@ -77,7 +77,7 @@ public class EventManager : MonoBehaviour, ScrollControlable
         if (holdingButton.Count > 0)
         {
             Animator anim = holdingButton[holdingButton.Count - 1].GetComponent<Animator>();
-            anim.Play("scale_down");
+            anim.SetBool("hold", false);
             if (hit.collider != null)
             {
                 Clickable ca = holdingButton[holdingButton.Count - 1].GetComponent<Clickable>();

@@ -44,6 +44,7 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
             {
                 screen1.transform.position = new Vector3(screen1.transform.position.x + movement, 0, 0);
                 screen2.transform.position = new Vector3(screen2.transform.position.x + movement, 0, 0);
+                remainNum.SetActive(false);
             }
             else
             {
@@ -58,7 +59,6 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
                 {
                     gameObject.SetActive(false);
                     screen2.gameObject.SetActive(false);
-                    remainNum.SetActive(false);
                     other.SetActive(true);
                 }
                 moveTrig = false;
