@@ -5,13 +5,13 @@ using UnityEngine;
 public class ScreenMoveScript : MonoBehaviour, Clickable
 {
     private bool moveTrig = false;
-    public GameObject screen1, screen2;
+    public GameObject screen1, screen2, other;
+    public GameObject remainNum;
     private float movement;
     private bool cable = true;
 
     public void onClicked()
     {
-        Debug.Log(gameObject.name);
         screen1.SetActive(true);
         screen2.SetActive(true);
         moveTrig = true;
@@ -20,13 +20,16 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
     // Start is called before the first frame update
     void Start()
     {
-
         switch (gameObject.name)
         {
-            case "right":
+            case "screenMoveButtonRight":
                 movement = -0.3f;
+                gameObject.SetActive(false);
+                screen2.SetActive(false);
+                remainNum.SetActive(false);
                 break;
-            case "leftImage":
+            case "screenMoveButtonLeft":
+                gameObject.SetActive(true);
                 movement = 0.3f;
                 break;
         }
@@ -37,15 +40,27 @@ public class ScreenMoveScript : MonoBehaviour, Clickable
     {
         if (moveTrig)
         {
-            if (gameObject.name == "leftImage" && screen1.transform.position.x < 17.9 || gameObject.name == "right" && screen1.transform.position.x > 0.0)
+            if (gameObject.name == "screenMoveButtonLeft" && screen1.transform.position.x < 17.9 || gameObject.name == "screenMoveButtonRight" && screen1.transform.position.x > 0.0)
             {
                 screen1.transform.position = new Vector3(screen1.transform.position.x + movement, 0, 0);
                 screen2.transform.position = new Vector3(screen2.transform.position.x + movement, 0, 0);
+                remainNum.SetActive(false);
             }
             else
             {
-                if (gameObject.name == "leftImage") screen1.gameObject.SetActive(false);
-                else if (gameObject.name == "right") screen2.gameObject.SetActive(false);
+                if (gameObject.name == "screenMoveButtonLeft")
+                {
+                    gameObject.SetActive(false);
+                    screen1.gameObject.SetActive(false);
+                    remainNum.SetActive(true);
+                    other.SetActive(true);
+                }
+                else if (gameObject.name == "screenMoveButtonRight")
+                {
+                    gameObject.SetActive(false);
+                    screen2.gameObject.SetActive(false);
+                    other.SetActive(true);
+                }
                 moveTrig = false;
             }
         }

@@ -20,6 +20,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     private int[] skills, forestNums;
     private int MAX_HARV_WOOD = 1000, MAX_HARV_DEER = 150, MAX_HARV_WOLF = 40;
     private int[] needs;
+    private int[] income;
 
     public void OnEnable()
     {
@@ -30,6 +31,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         satPredict = resultPredict.transform.Find("satPredict").gameObject;
 
         numHarv[0] = forestNums[0] * 100;
+        numHarv[1] = Convert.ToInt32(MAX_HARV_WOOD * 0.5f);
+        numHarv[2] = Convert.ToInt32(MAX_HARV_DEER * 0.5f);
+        numHarv[3] = Convert.ToInt32(MAX_HARV_WOLF * 0.5f);
         farmBar.fillAmount = forestNums[0] / 12.0f;
 
         int[] calcul = new int[4];
@@ -55,7 +59,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         doplan.setSat(calcul);
         drawPredict(t);
 
-        moneyPredict.text = "0G";
+        int m = calculator.calculMoney(out income, numHarv, 0);
+        moneyPredict.text = m.ToString() + "G";
+        doplan.setAddMoney(income);
     }
     public void setAmount(float r, string code)
     {
@@ -81,7 +87,9 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         doplan.setSat(calcul);
         drawPredict(t);
 
-        moneyPredict.text = (Convert.ToInt32(calculator.calculMoney(numHarv, 0)*0.2)).ToString() + "G";
+        int m = Convert.ToInt32(calculator.calculMoney(out income, numHarv, 0) * 0.2);
+        moneyPredict.text = m.ToString() + "G";
+        doplan.setAddMoney(income);
     }
 
     private void drawPredict(int[] calcul)
@@ -112,6 +120,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         int[] calcul = new int[4];
         calculator.calculNum(out calcul, forestNums, numHarv, fund);
         drawPredict(calcul);
-        doplan.setFund(f);
+        doplan.setfund(f);
+        doplan.activatable();
     }
 }

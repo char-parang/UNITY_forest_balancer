@@ -37,6 +37,10 @@ public class Data : MonoBehaviour
         {
             needs = n;
         }
+        public void setFieldStatus(string s)
+        {
+            forest.setFstatus(s);
+        }
         public int[] getSkills()
         {
             return skills;
@@ -60,10 +64,15 @@ public class Data : MonoBehaviour
         {
             return needs;
         }
+        public string getFieldStatus()
+        {
+            return forest.getFstatus();
+        }
     };
     private class FOREST
     {
         int farmer, tree, deer, wolf;
+        string fieldStatus = "000000000000";
         public void setSomething(char who, int i)
         {
             switch (who)
@@ -82,6 +91,10 @@ public class Data : MonoBehaviour
                     break;
             }
         }
+        public void setFstatus(string s)
+        {
+            fieldStatus = s;
+        }
         public int getSomething(char who)
         {
             switch (who)
@@ -98,6 +111,10 @@ public class Data : MonoBehaviour
                     return 0;
             }
             
+        }
+        public string getFstatus()
+        {
+            return fieldStatus;
         }
     }
     private class SATISFY
@@ -129,11 +146,70 @@ public class Data : MonoBehaviour
     }
 
     private USER user = new USER();
+    //List<string> goWorkScript, workSucScript, workFailScript;
+    List<string>[] goWorkScript = new List<string>[4], workSucScript = new List<string>[4], workFailScript = new List<string>[4];
 
     // Start is called before the first frame update
     void Start()
     {
-        string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money", "needs" };
+        userInit();
+        scriptInit();
+    }
+
+    private void scriptInit()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            goWorkScript[i] = new List<string>();
+            workSucScript[i] = new List<string>();
+            workFailScript[i] = new List<string>();
+        }
+
+        string[] c = { "farmer", "wood", "deer", "wolf" };
+        List<string> data = selectData(c, "workScript", "code='1'");
+        for(int i = 0; i< data.Count; i++)
+        {
+            if (i % 4 == 0)
+                goWorkScript[0].Add(data[i]);
+            else if (i % 4 == 1)
+                goWorkScript[1].Add(data[i]);
+            else if (i % 4 == 2)
+                goWorkScript[2].Add(data[i]);
+            else
+                goWorkScript[3].Add(data[i]);
+        }
+
+
+        data = selectData(c, "workScript", "code=2");
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (i % 4 == 0)
+                workSucScript[0].Add(data[i]);
+            else if (i % 4 == 1)
+                workSucScript[1].Add(data[i]);
+            else if (i % 4 == 2)
+                workSucScript[2].Add(data[i]);
+            else
+                workSucScript[3].Add(data[i]);
+        }
+
+        data = selectData(c, "workScript", "code=3");
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (i % 4 == 0)
+                workFailScript[0].Add(data[i]);
+            else if (i % 4 == 1)
+                workFailScript[1].Add(data[i]);
+            else if (i % 4 == 2)
+                workFailScript[2].Add(data[i]);
+            else
+                workFailScript[3].Add(data[i]);
+        }
+    }
+
+    private void userInit()
+    {
+        string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money", "needs", "FieldStatus" };
         List<string> d = selectData(cols, "Char_info");
         if (d.Count < 1)
         {
@@ -147,7 +223,7 @@ public class Data : MonoBehaviour
         {
             int a = Int32.Parse(d[1][i].ToString());
             data[i] = a;
-        } 
+        }
         user.setSkills(data);
         user.setForest('t', Int32.Parse(d[2]));
         user.setForest('d', Int32.Parse(d[3]));
@@ -162,6 +238,7 @@ public class Data : MonoBehaviour
         for (int i = 0; i < 4; i++)
             tmp[i] = Int32.Parse(d[11][i].ToString());
         user.setNeeds(tmp);
+        user.setFieldStatus(d[12]);
     }
 
     public List<string> selectData(string[] columns, string table, string where=null)
@@ -186,6 +263,15 @@ public class Data : MonoBehaviour
             for (int i = 0; i < columns.Length; i++) { data.Add(reader.GetString(i)); }
         dbconn.Close();
         return data;
+    }
+
+    public string getRandomWorkScipt(int code, int idx)
+    {
+        string result = "";
+        if (code == 1) result = goWorkScript[idx][UnityEngine.Random.Range(0, goWorkScript[idx].Count - 1)];
+        else if (code == 2) result = workSucScript[idx][UnityEngine.Random.Range(0, workSucScript[idx].Count - 1)];
+        else if (code == 3) result = workFailScript[idx][UnityEngine.Random.Range(0, workFailScript[idx].Count - 1)];
+        return result;
     }
 
     public List<string> getItemInfo(string itemName)
@@ -295,5 +381,38 @@ public class Data : MonoBehaviour
     public int[] getUserNeeds()
     {
         return user.getNeeds();
+    }
+    public string getFieldStatus()
+    {
+        return user.getFieldStatus();
+    }
+    internal void setSatisfy(int[] sat)
+    {
+        user.setSat('f', sat[0]);
+        user.setSat('t', sat[1]);
+        user.setSat('d', sat[2]);
+        user.setSat('w', sat[3]);
+
+        string[] c = { "sat_Farmer", "sat_Wood", "sat_Deer", "sat_Wolf" }, v = { sat[0].ToString(), sat[1].ToString(), sat[2].ToString(), sat[3].ToString()};
+        updateData("Char_info", c, v);
+    }
+
+    internal void setForestUnits(int[] num)
+    {
+        user.setForest('f', num[0] / 100);
+        user.setForest('t', num[1]);
+        user.setForest('d', num[2]);
+        user.setForest('w', num[3]);
+
+        string[] c = {"Filds", "num_Tree", "num_Deer", "num_Wolf" }, v = { (num[0]/100).ToString(), num[1].ToString(), num[2].ToString(), num[3].ToString() };
+        updateData("Char_info", c, v);
+    }
+
+    public void setFieldStatus(string s, int i)
+    {
+        user.setForest('f', i);
+        user.setFieldStatus(s);
+        string[] c = { "FieldStatus", "Filds" }, v = { s, i.ToString() };
+        updateData("Char_info", c, v);
     }
 }

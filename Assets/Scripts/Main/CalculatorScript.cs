@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class CalculatorScript : MonoBehaviour
 {
+    private Data data;
+    public CalculatorScript()
+    {
+    }
     public void calculNum(out int[] res, int[] cur, int[] harv, int money)
     {
         int[] result = new int[4];
         // 수확
-        float farm = cur[0] * 100;
+        float farm = cur[0];
         float wood = cur[1] - harv[1];
         float deer = cur[2] - harv[2];
         float wolf = cur[3] - harv[3];
@@ -26,7 +30,7 @@ public class CalculatorScript : MonoBehaviour
         wolf += wolf * 0.2f;
 
 
-        result[0] = Convert.ToInt32(farm + money);
+        result[0] = Convert.ToInt32(farm);
         result[1] = Convert.ToInt32(wood + money);
         result[2] = Convert.ToInt32(deer + deer * money / 3000);
         result[3] = Convert.ToInt32(wolf + wolf * money / 3000);
@@ -66,6 +70,14 @@ public class CalculatorScript : MonoBehaviour
                 t[i] = "|";
             }
 
+            if (result[i] > 100)
+                result[i] = 100;
+            else if(result[i] < 0)
+            {
+                result[i] = 0;
+                t[i] = "X";
+            }
+
             result[i] += itemBuf;
         }
 
@@ -80,6 +92,7 @@ public class CalculatorScript : MonoBehaviour
         {
             for(int i = 0; i < 4; i++)
                 result[i] = UnityEngine.Random.Range(3, 9);
+            
         }
         else
         {
@@ -92,13 +105,17 @@ public class CalculatorScript : MonoBehaviour
         needs = result;
     }
 
-    public int calculMoney(int[] harv, int skillBuf)
+    public int calculMoney(out int[] money, int[] harv, int skillBuf)
     {
         int sum = 0;
-        sum += harv[0] * 1;
-        sum += harv[1] * 1;
-        sum += harv[2] * 5;
-        sum += harv[3] * 15;
+        int[] tmp = new int[4];
+        tmp[0] = harv[0] * 1;
+        tmp[1] = harv[1] * 1;
+        tmp[2] = harv[2] * 5;
+        tmp[3] = harv[3] * 15;
+        for (int i = 0; i < 4; i++)
+            sum += tmp[i];
+        money = tmp;
         return sum;
     }
 }

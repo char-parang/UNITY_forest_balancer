@@ -1,31 +1,34 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TileScript : MonoBehaviour, Clickable
 {
 
-    public RuntimeAnimatorController click, tswitch;
     private Animator anim;
-    private bool cable= false;
+    private bool isFarm;
+    private TileManageScript tileManager;
 
     public void onClicked()
     {
-        anim.runtimeAnimatorController = tswitch;
-        /*anim.GetCurrentAnimatorStateInfo();*/
+        if (isFarm)
+        {
+            tileManager.showNotice("A2F");
+        }
+        else
+        {
+            tileManager.showNotice("F2A");
+        }
+        tileManager.setCilckedTile(Convert.ToInt32(gameObject.name));
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void setTileManager(TileManageScript t)
     {
-        anim = GetComponent<Animator>();
-        anim.runtimeAnimatorController = click;
+        tileManager = t;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void setIsFarm(bool b)
     {
-        
+        isFarm = b;
     }
-
 }
