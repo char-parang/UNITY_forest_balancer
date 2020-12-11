@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileManageScript : MonoBehaviour
 {
     public Data data;
     public GameObject[] notices, texts;
+    public GameObject nope;
+    public RemainNumScript remains;
     private char[] fieldStatus = new char[12];
     private int clickedTileNum;
 
@@ -18,6 +21,7 @@ public class TileManageScript : MonoBehaviour
     public void update()
     {
         init();
+        remains.OnEnable();
     }
 
     private void init()
@@ -55,13 +59,37 @@ public class TileManageScript : MonoBehaviour
         {
             notices[0].SetActive(true);
             texts[0].SetActive(true);
-            notices[0].transform.Find("buttons").Find("yes").GetComponent<TileChangeScript>().setIsFarm(true);
+            if (1000 > data.getUserMoney())
+            {
+                nope.SetActive(true);
+                notices[0].transform.Find("buttons").Find("yes").GetComponent<Collider2D>().enabled = false;
+                notices[0].transform.Find("buttons").Find("yes").GetComponent<SpriteRenderer>().color = Color.gray;
+            }
+            else
+            {
+                nope.SetActive(false);
+                notices[0].transform.Find("buttons").Find("yes").GetComponent<Collider2D>().enabled = true;
+                notices[0].transform.Find("buttons").Find("yes").GetComponent<SpriteRenderer>().color = Color.white;
+                notices[0].transform.Find("buttons").Find("yes").GetComponent<TileChangeScript>().setIsFarm(true);
+            }
         }
         else
         {
             notices[1].SetActive(true);
             texts[1].SetActive(true);
-            notices[1].transform.Find("buttons").Find("yes").GetComponent<TileChangeScript>().setIsFarm(false);
+            if (500 > data.getUserMoney())
+            {
+                nope.SetActive(true);
+                notices[1].transform.Find("buttons").Find("yes").GetComponent<Collider2D>().enabled = false;
+                notices[1].transform.Find("buttons").Find("yes").GetComponent<SpriteRenderer>().color = Color.gray;
+            }
+            else
+            {
+                nope.SetActive(false);
+                notices[1].transform.Find("buttons").Find("yes").GetComponent<Collider2D>().enabled = true;
+                notices[1].transform.Find("buttons").Find("yes").GetComponent<SpriteRenderer>().color = Color.white;
+                notices[1].transform.Find("buttons").Find("yes").GetComponent<TileChangeScript>().setIsFarm(true);
+            }
         }
     }
 }
