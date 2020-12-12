@@ -27,6 +27,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
         animscript.setFail(p);
         animscript.setNums(num);
         animscript.setMoney(income);
+        animscript.setCode(0);
 
         for(int i = 0; i < 4; i++)
         {

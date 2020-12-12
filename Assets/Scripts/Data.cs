@@ -423,6 +423,12 @@ public class Data : MonoBehaviour
     {
         return user.getFactoryActivate();
     }
+    public List<string> getFestivalScript (int code)
+    {
+        string[] c = { "script", "resultScript", "sat", "income" };
+        List<string> data = selectData(c, "festivalScript", "code='" + code.ToString() + "'");
+        return data;
+    }
     internal void setSatisfy(int[] sat)
     {
         user.setSat('f', sat[0]);

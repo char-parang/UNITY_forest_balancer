@@ -20,12 +20,6 @@ public class GameManager : MonoBehaviour, ScrollControlable
             village.transform.Find("factory").Find("factoryImage").GetComponent<SpriteRenderer>().color = Color.white;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void onMainScreenStart()
     {
         for(int i =0;i < popups.Length; i++)

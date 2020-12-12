@@ -13,10 +13,17 @@ public class DoPlanAnimationScript : MonoBehaviour
     public Data data;
     private int[] nums;
     private int[] money;
+    private int fIncome;
+    private int code;
 
     public void OnEnable()
     {
-        startAnimation();
+        Debug.Log(code);
+        if (code == 0)
+            startAnimation();
+        else
+            startFestivalAnimation();
+        //gameObject.SetActive(false);
     }
     public void setFail(bool[] f)
     {
@@ -34,6 +41,32 @@ public class DoPlanAnimationScript : MonoBehaviour
         StartCoroutine(waitAndDraoAnim("wood", 1));
         StartCoroutine(waitAndDraoAnim("deer", 2));
         StartCoroutine(waitAndDraoAnim("wolf", 3));
+    }
+
+    public void startFestivalAnimation()
+    {
+        obj = gameObject.transform.Find("festival").gameObject;
+        Animator animator = obj.GetComponent<Animator>();
+        Text t = obj.transform.Find("Text").GetComponent<Text>();
+        List<string> scripts = data.getFestivalScript(code);
+        t.text = scripts[0];
+        obj.SetActive(true);
+        animator.SetInteger("festivalCode", code);
+        StartCoroutine(waitFestivalAnimation());
+    }
+    private IEnumerator waitFestivalAnimation()
+    {
+        yield return new WaitForSeconds(3);
+        obj = gameObject.transform.Find("festival").gameObject;
+        Text t = obj.transform.Find("Text").GetComponent<Text>();
+        List<string> scripts = data.getFestivalScript(code);
+        string[] a = scripts[1].Split(';');
+        t.text = a[0] + fIncome.ToString() + a[1];
+    }
+
+    public void setCode(int v)
+    {
+        code = v;
     }
 
     private void drawAnim(string animName, int idx)
@@ -89,5 +122,8 @@ public class DoPlanAnimationScript : MonoBehaviour
     {
         money = m;
     }
-
+    public void setMoney(int m)
+    {
+        fIncome = m;
+    }
 }
