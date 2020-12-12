@@ -11,6 +11,7 @@ public class Data : MonoBehaviour
         int[] skills = new int[4];
         int[] needs = new int[4];
         int month, money;
+        bool factoryActivate;
         FOREST forest = new FOREST();
         SATISFY sat = new SATISFY();
         public void setSkills(int[] i)
@@ -41,6 +42,10 @@ public class Data : MonoBehaviour
         {
             forest.setFstatus(s);
         }
+        public void setFactoryActivate(bool b)
+        {
+            factoryActivate = b;
+        }
         public int[] getSkills()
         {
             return skills;
@@ -67,6 +72,10 @@ public class Data : MonoBehaviour
         public string getFieldStatus()
         {
             return forest.getFstatus();
+        }
+        public bool getFactoryActivate()
+        {
+            return factoryActivate;
         }
     };
     private class FOREST
@@ -209,20 +218,21 @@ public class Data : MonoBehaviour
 
     private void userInit()
     {
-        string[] cols = { 
-            "Filds", 
-            "Skills", 
-            "num_Tree", 
-            "num_Deer", 
-            "num_Wolf", 
-            "sat_Farmer", 
-            "sat_Tree", 
-            "sat_Deer", 
-            "sat_Wolf", 
-            "Months", 
-            "money", 
-            "needs", 
-            "FieldStatus" 
+        string[] cols = {
+            "Filds",
+            "Skills",
+            "num_Tree",
+            "num_Deer",
+            "num_Wolf",
+            "sat_Farmer",
+            "sat_Tree",
+            "sat_Deer",
+            "sat_Wolf",
+            "Months",
+            "money",
+            "needs",
+            "FieldStatus",
+            "FactoryActivate"
         };
 
         List<string> d = selectData(cols, "Char_info");
@@ -254,6 +264,7 @@ public class Data : MonoBehaviour
             tmp[i] = Int32.Parse(d[11][i].ToString());
         user.setNeeds(tmp);
         user.setFieldStatus(d[12]);
+        user.setFactoryActivate(Convert.ToBoolean(d[13]));
     }
 
     public List<string> selectData(string[] columns, string table, string where=null)
@@ -408,6 +419,10 @@ public class Data : MonoBehaviour
     {
         return user.getFieldStatus();
     }
+    public bool getFactoryActivate()
+    {
+        return user.getFactoryActivate();
+    }
     internal void setSatisfy(int[] sat)
     {
         user.setSat('f', sat[0]);
@@ -435,6 +450,12 @@ public class Data : MonoBehaviour
         user.setForest('f', i);
         user.setFieldStatus(s);
         string[] c = { "FieldStatus", "Filds" }, v = { s, i.ToString() };
+        updateData("Char_info", c, v);
+    }
+    public void setFactoryActivate(bool b)
+    {
+        user.setFactoryActivate(b);
+        string[] c = { "FactoryActivate" }, v = { b.ToString() };
         updateData("Char_info", c, v);
     }
 }

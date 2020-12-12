@@ -7,12 +7,17 @@ public class GameManager : MonoBehaviour, ScrollControlable
     public GameObject[] popups;
     private GameObject[] clickables;
     private AudioSource bgm;
+    public Data data;
+    public GameObject village;
+
     // Start is called before the first frame update
     void Start()
     {
         onMainScreenStart();
         bgm = gameObject.GetComponent<AudioSource>();
         bgm.volume = 0.5f;
+        if(data.getFactoryActivate())
+            village.transform.Find("factory").Find("factoryImage").GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     // Update is called once per frame

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class DialogScript : MonoBehaviour, Clickable
 {
     public Data data;
+    public GameManager gm;
     private string group;
     private int code;
     private string[] script1, answer, scriptY, scriptN, resultY, resultN;
@@ -18,6 +19,7 @@ public class DialogScript : MonoBehaviour, Clickable
 
     public void OnEnable()
     {
+        gm.setOtherClickable(false);
         canvas = gameObject.transform.Find("Canvas").gameObject;
         tellObj = canvas.transform.Find("text").gameObject;
         nameObj = canvas.transform.Find("name").gameObject;
@@ -129,6 +131,7 @@ public class DialogScript : MonoBehaviour, Clickable
                     setResult(YesNo);
                     scriptIdx = 0;
                     seqIdx = 0;
+                    gm.setOtherClickable(true);
                     break; 
                 }
                 tell.text = toTell[scriptIdx++];
