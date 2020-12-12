@@ -209,7 +209,22 @@ public class Data : MonoBehaviour
 
     private void userInit()
     {
-        string[] cols = { "Filds", "Skills", "num_Tree", "num_Deer", "num_Wolf", "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf", "Months", "money", "needs", "FieldStatus" };
+        string[] cols = { 
+            "Filds", 
+            "Skills", 
+            "num_Tree", 
+            "num_Deer", 
+            "num_Wolf", 
+            "sat_Farmer", 
+            "sat_Tree", 
+            "sat_Deer", 
+            "sat_Wolf", 
+            "Months", 
+            "money", 
+            "needs", 
+            "FieldStatus" 
+        };
+
         List<string> d = selectData(cols, "Char_info");
         if (d.Count < 1)
         {
@@ -333,6 +348,13 @@ public class Data : MonoBehaviour
         }
         dbcmd.CommandText = sqlQuery;
         dbconn.Close();
+    }
+    public List<string> getScript(int code, string who)
+    {
+        string[] c = { "script1", "answer", "script2", "result" };
+        List<string> data;
+        data = selectData(c, "dialog", "code='" + code + "' AND people='" + who + "'");
+        return data;
     }
 
     public int getUserMoney()
