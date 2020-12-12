@@ -353,7 +353,9 @@ public class Data : MonoBehaviour
     {
         string[] c = { "script1", "answer", "script2", "result" };
         List<string> data;
-        data = selectData(c, "dialog", "code'=" + code + "' AND group='" + who + "'");
+        data = selectData(c, "dialog", "code='" + code + "' AND people='" + who + "'");
+        for (int i = 0; i < data.Count; i++)
+            Debug.Log(data[i]);
         return data;
     }
 
