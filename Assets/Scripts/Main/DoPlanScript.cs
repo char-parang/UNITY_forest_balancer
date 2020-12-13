@@ -45,6 +45,8 @@ public class DoPlanScript : MonoBehaviour, Clickable
         int getPrevFarm = data.getPrevNum()[0];
         if (needs[0] > harvs[0])
             getPrevFarm++;
+        else
+            getPrevFarm = 0;
         int[] tmp = data.getUserForestUnits();
         tmp[0] = getPrevFarm;
         data.setPrevNum(tmp);
