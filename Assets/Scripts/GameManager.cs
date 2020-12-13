@@ -7,18 +7,15 @@ public class GameManager : MonoBehaviour, ScrollControlable
     public GameObject[] popups;
     private GameObject[] clickables;
     private AudioSource bgm;
+    public Data data;
+    public GameObject village;
+
     // Start is called before the first frame update
     void Start()
     {
         onMainScreenStart();
         bgm = gameObject.GetComponent<AudioSource>();
         bgm.volume = 0.5f;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void onMainScreenStart()
@@ -28,10 +25,7 @@ public class GameManager : MonoBehaviour, ScrollControlable
             popups[i].SetActive(false);
         }
         clickables = GameObject.FindGameObjectsWithTag("Clickable");
-        for (int i = 0; i < clickables.Length; i++)
-        {
-            clickables[i].GetComponent<Collider2D>().enabled = true;
-        }
+        setOtherClickable(true);
     }
 
     public void setOtherClickable(GameObject obj, bool status)
@@ -42,7 +36,8 @@ public class GameManager : MonoBehaviour, ScrollControlable
     {
         for (int i = 0; i < clickables.Length; i++)
         {
-            clickables[i].GetComponent<Collider2D>().enabled = status;
+            if (clickables[i].GetComponent<Collider2D>() != null)
+                clickables[i].GetComponent<Collider2D>().enabled = status;
         }
     }
 

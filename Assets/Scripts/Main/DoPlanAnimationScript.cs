@@ -11,12 +11,19 @@ public class DoPlanAnimationScript : MonoBehaviour
     private bool finish;
     private GameObject obj;
     public Data data;
-    private int[] nums;
+    public GameManager gm;
+    private int[] harvs;
     private int[] money;
+    private int fIncome;
+    private int code;
 
     public void OnEnable()
     {
-        startAnimation();
+        if (code == 0)
+            startAnimation();
+        else
+            startFestivalAnimation();
+        data.nextMonth();
     }
     public void setFail(bool[] f)
     {
@@ -34,6 +41,41 @@ public class DoPlanAnimationScript : MonoBehaviour
         StartCoroutine(waitAndDraoAnim("wood", 1));
         StartCoroutine(waitAndDraoAnim("deer", 2));
         StartCoroutine(waitAndDraoAnim("wolf", 3));
+    }
+
+    public void startFestivalAnimation()
+    {
+        obj = gameObject.transform.Find("festival").gameObject;
+        Animator animator = obj.GetComponent<Animator>();
+        Text t = obj.transform.Find("Text").GetComponent<Text>();
+        List<string> scripts = data.getFestivalScript(code);
+        t.text = scripts[0];
+        obj.SetActive(true);
+        animator.SetInteger("festivalCode", code);
+        StartCoroutine(waitFestival1());
+    }
+    private IEnumerator waitFestival1()
+    {
+        yield return new WaitForSeconds(3);
+        obj = gameObject.transform.Find("festival").gameObject;
+        Text t = obj.transform.Find("Text").GetComponent<Text>();
+        List<string> scripts = data.getFestivalScript(code);
+        string[] a = scripts[1].Split(';');
+        t.text = a[0] + fIncome.ToString() + a[1];
+        StartCoroutine(waitFestival2());
+    }
+    private IEnumerator waitFestival2()
+    {
+        yield return new WaitForSeconds(3);
+        obj = gameObject.transform.Find("festival").gameObject;
+        obj.SetActive(false);
+        gm.setOtherClickable(true);
+        gameObject.SetActive(false);
+    }
+
+    public void setCode(int v)
+    {
+        code = v;
     }
 
     private void drawAnim(string animName, int idx)
@@ -56,13 +98,13 @@ public class DoPlanAnimationScript : MonoBehaviour
         {
             animator.Play(animName + "_fail");
             string[] tmp = data.getRandomWorkScipt(3, idx).Split(';');
-            t.text = tmp[0] + nums[idx] + tmp[1] + money[idx] + tmp[2];
+            t.text = tmp[0] + harvs[idx] + tmp[1] + money[idx] + tmp[2];
         }
         else
         {
             animator.Play(animName+"_again");
             string[] tmp = data.getRandomWorkScipt(2, idx).Split(';');
-            t.text = tmp[0] + nums[idx] + tmp[1] + money[idx] + tmp[2];
+            t.text = tmp[0] + harvs[idx] + tmp[1] + money[idx] + tmp[2];
         }
         StartCoroutine(waitFinishSecond(3, animName));
     }
@@ -80,14 +122,17 @@ public class DoPlanAnimationScript : MonoBehaviour
         drawAnim(animName, idx);
     }
 
-    public void setNums(int[] n)
+    public void setHarvs(int[] n)
     {
-        nums = n;
+        harvs = n;
     }
 
     public void setMoney(int[] m)
     {
         money = m;
     }
-
+    public void setMoney(int m)
+    {
+        fIncome = m;
+    }
 }

@@ -15,7 +15,7 @@ public class RemainNumScript : MonoBehaviour
         {
             t = gameObject.transform.GetChild(i).GetComponent<Text>();
             if (nums[i] >= 1000)
-                t.text = (nums[i] / 1000.0).ToString() + "k";
+                t.text = string.Format("{0:0.#}", (nums[i] / 1000.0)) + "k";
             else
                 t.text = nums[i].ToString();
         }

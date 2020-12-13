@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Data;
 using Mono.Data.Sqlite;
+using System.IO;
 
 public class Data : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Data : MonoBehaviour
         int[] skills = new int[4];
         int[] needs = new int[4];
         int month, money;
+        bool factoryActivate;
         FOREST forest = new FOREST();
         SATISFY sat = new SATISFY();
         public void setSkills(int[] i)
@@ -41,6 +43,10 @@ public class Data : MonoBehaviour
         {
             forest.setFstatus(s);
         }
+        public void setFactoryActivate(bool b)
+        {
+            factoryActivate = b;
+        }
         public int[] getSkills()
         {
             return skills;
@@ -67,6 +73,10 @@ public class Data : MonoBehaviour
         public string getFieldStatus()
         {
             return forest.getFstatus();
+        }
+        public bool getFactoryActivate()
+        {
+            return factoryActivate;
         }
     };
     private class FOREST
@@ -209,20 +219,21 @@ public class Data : MonoBehaviour
 
     private void userInit()
     {
-        string[] cols = { 
-            "Filds", 
-            "Skills", 
-            "num_Tree", 
-            "num_Deer", 
-            "num_Wolf", 
-            "sat_Farmer", 
-            "sat_Tree", 
-            "sat_Deer", 
-            "sat_Wolf", 
-            "Months", 
-            "money", 
-            "needs", 
-            "FieldStatus" 
+        string[] cols = {
+            "Filds",
+            "Skills",
+            "num_Tree",
+            "num_Deer",
+            "num_Wolf",
+            "sat_Farmer",
+            "sat_Tree",
+            "sat_Deer",
+            "sat_Wolf",
+            "Months",
+            "money",
+            "needs",
+            "FieldStatus",
+            "FactoryActivate"
         };
 
         List<string> d = selectData(cols, "Char_info");
@@ -254,6 +265,7 @@ public class Data : MonoBehaviour
             tmp[i] = Int32.Parse(d[11][i].ToString());
         user.setNeeds(tmp);
         user.setFieldStatus(d[12]);
+        user.setFactoryActivate(Convert.ToBoolean(d[13]));
     }
 
     public List<string> selectData(string[] columns, string table, string where=null)
@@ -331,17 +343,17 @@ public class Data : MonoBehaviour
 
     public void updateData(string table, string[] cols, string[] vals)
     {
-        if(cols.Length != vals.Length)
+        if (cols.Length != vals.Length)
         {
             Debug.LogError("sql error: cols and vals not matched");
             return;
         }
-        string conn = "URI=file:" + Application.dataPath + "/StreamingAssets/fb_DB.db";
-        IDbConnection dbconn = (IDbConnection)new SqliteConnection(conn);
+        string conn = Application.dataPath + "/StreamingAssets/fb_DB.db";
+        IDbConnection dbconn = (IDbConnection)new SqliteConnection("URI=file:" + conn);
         dbconn.Open();
         IDbCommand dbcmd = dbconn.CreateCommand();
         string sqlQuery = "UPDATE " + table + " SET ";
-        for(int i =0; i < cols.Length; i++)
+        for (int i = 0; i < cols.Length; i++)
         {
             sqlQuery += cols[i] + "=" + vals[i];
             if (i < cols.Length - 1) sqlQuery += ", ";
@@ -349,6 +361,7 @@ public class Data : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         dbconn.Close();
     }
+
     public List<string> getScript(int code, string who)
     {
         string[] c = { "script1", "answer", "script2", "result" };
@@ -408,6 +421,16 @@ public class Data : MonoBehaviour
     {
         return user.getFieldStatus();
     }
+    public bool getFactoryActivate()
+    {
+        return user.getFactoryActivate();
+    }
+    public List<string> getFestivalScript (int code)
+    {
+        string[] c = { "script", "resultScript", "sat", "income" };
+        List<string> data = selectData(c, "festivalScript", "code='" + code.ToString() + "'");
+        return data;
+    }
     internal void setSatisfy(int[] sat)
     {
         user.setSat('f', sat[0]);
@@ -435,6 +458,19 @@ public class Data : MonoBehaviour
         user.setForest('f', i);
         user.setFieldStatus(s);
         string[] c = { "FieldStatus", "Filds" }, v = { s, i.ToString() };
+        updateData("Char_info", c, v);
+    }
+    public void setFactoryActivate(bool b)
+    {
+        user.setFactoryActivate(b);
+        string[] c = { "FactoryActivate" }, v = { b.ToString() };
+        updateData("Char_info", c, v);
+    }
+
+    public void nextMonth()
+    {
+        user.setMonth(user.getMonth() + 1);
+        string[] c = { "Month" }, v = { (user.getMonth() + 1).ToString() };
         updateData("Char_info", c, v);
     }
 }

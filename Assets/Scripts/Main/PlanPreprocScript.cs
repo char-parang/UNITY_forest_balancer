@@ -21,11 +21,13 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     private int MAX_HARV_WOOD = 1000, MAX_HARV_DEER = 150, MAX_HARV_WOLF = 40;
     private int[] needs;
     private int[] income;
+    private bool isFactoryAcitve;
 
     public void OnEnable()
     {
         skills = data.getUserSkills();
         forestNums = data.getUserForestUnits();
+        isFactoryAcitve = data.getFactoryActivate();
         calculator = new CalculatorScript();
         numPredict = resultPredict.transform.Find("amountPredict").gameObject;
         satPredict = resultPredict.transform.Find("satPredict").gameObject;
@@ -37,9 +39,10 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         farmBar.fillAmount = forestNums[0] / 12.0f;
 
         int[] calcul = new int[4];
-        calculator.calculNum(out calcul, forestNums, numHarv, fund);
+        calculator.calculNum(out calcul, forestNums, numHarv, fund, isFactoryAcitve);
         drawPredict(calcul);
         doplan.setNum(calcul);
+        doplan.setHarvs(numHarv);
 
         string[] t;
         int[] prevNeeds = data.getUserNeeds();
@@ -59,7 +62,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         doplan.setSat(calcul);
         drawPredict(t);
 
-        int m = calculator.calculMoney(out income, numHarv, 0);
+        int m = calculator.calculMoney(out income, numHarv, 0, isFactoryAcitve);
         moneyPredict.text = m.ToString() + "G";
         doplan.setAddMoney(income);
     }
@@ -78,16 +81,17 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
                 break;
         }
         int[] calcul;
-        calculator.calculNum(out calcul, data.getUserForestUnits(), numHarv, fund);
+        calculator.calculNum(out calcul, data.getUserForestUnits(), numHarv, fund, isFactoryAcitve);
         drawPredict(calcul);
         doplan.setNum(calcul);
+        doplan.setHarvs(numHarv);
 
         string[] t;
         calculator.calculSat(out calcul, out t, data.getSats(), numHarv, needs, 0);
         doplan.setSat(calcul);
         drawPredict(t);
 
-        int m = Convert.ToInt32(calculator.calculMoney(out income, numHarv, 0) * 0.2);
+        int m = Convert.ToInt32(calculator.calculMoney(out income, numHarv, 0, isFactoryAcitve));
         moneyPredict.text = m.ToString() + "G";
         doplan.setAddMoney(income);
     }
@@ -118,7 +122,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     {
         fund = f;
         int[] calcul = new int[4];
-        calculator.calculNum(out calcul, forestNums, numHarv, fund);
+        calculator.calculNum(out calcul, forestNums, numHarv, fund, isFactoryAcitve);
         drawPredict(calcul);
         doplan.setfund(f);
         doplan.activatable();
