@@ -45,18 +45,19 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         doplan.setHarvs(numHarv);
 
         string[] t;
-        int[] prevNeeds = data.getUserNeeds();
 
-        calculator.calculNeeds(out needs, prevNeeds);
-        for(int i = 0; i < 4; i++)
+        needs = data.getUserNeeds();
+        Debug.Log(needs[0]);
+
+        for (int i = 0; i < 4; i++)
         {
             units[i].transform.Find("predict").localPosition = new Vector3(23.9f+(231.9f - 23.9f) / 10 * needs[i], units[i].transform.Find("predict").localPosition.y);
         }
 
-        needs[0] *= 100;
-        needs[1] = (MAX_HARV_WOOD * needs[1] / 10);
-        needs[2] = (MAX_HARV_DEER * needs[2] / 10);
-        needs[3] = (MAX_HARV_WOLF * needs[3] / 10);
+        needs[0] = 1200 * needs[0]/10;
+        needs[1] = MAX_HARV_WOOD * needs[1] / 10;
+        needs[2] = MAX_HARV_DEER * needs[2] / 10;
+        needs[3] = MAX_HARV_WOLF * needs[3] / 10;
         doplan.setNeeds(needs);
 
         calculator.calculSat(out calcul, out t, data.getSats(), numHarv, needs, 0);
@@ -83,6 +84,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         }
         int[] calcul;
         calculator.calculNum(out calcul, data.getUserForestUnits(), numHarv, fund, isFactoryAcitve);
+        Debug.Log(calcul[3]);
         drawPredict(calcul);
         doplan.setNum(calcul);
         doplan.setHarvs(numHarv);

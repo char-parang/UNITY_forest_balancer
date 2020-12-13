@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ResultScript : MonoBehaviour
 {
     public Data data;
+    public ResultNextScript next;
 
     public void OnEnable()
     {
@@ -14,9 +15,14 @@ public class ResultScript : MonoBehaviour
         int[] sat = data.getSats();
         GameObject bg = gameObject.transform.Find("Background").gameObject;
 
-        if (prev[0] > 1)
+        if(prev[0] > 2)
         {
-            bg.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "필요한 식량 생산 요구량을 " + prev[0] + "달째 충족하지 못했습니다.\n" +
+            bg.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "<color=red>식량 생산 요구량을  3달째 충족하지 못했습니다.\n마을사람들이 통제에서 벗어납니다.</color>";
+            next.endcode = 0;
+        }
+        else if (prev[0] > 1)
+        {
+            bg.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "식량 생산 요구량을 " + prev[0] + "달째 충족하지 못했습니다.\n" +
                 "앞으로 " + (3 - prev[0]) + "달 더 생산량을 충족하지 못할 경우 마을 사람들이 통제에서 벗어날 것입니다.";
             bg.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "!!!";
         }
@@ -26,7 +32,7 @@ public class ResultScript : MonoBehaviour
             bg.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "-";
         }
 
-            for (int i = 1; i < 4; i++)
+        for (int i = 1; i < 4; i++)
         {
             int stack = 0;
             GameObject tmp = bg.transform.GetChild(i).gameObject;
@@ -83,6 +89,39 @@ public class ResultScript : MonoBehaviour
                 else
                     tmp.transform.GetChild(1).GetComponent<Text>().text = "-";
             }
+        }
+        int exNum = 0;
+        int ex = 0;
+        for (int i = 0; i < 3; i++) {
+            if (cur[i] <= 0)
+            {
+                exNum++;
+                ex += (i+1) * (i+1);
+            }
+        }
+        if(exNum > 1)
+        {
+            switch (ex)
+            {
+                case 1 + 4:
+                    next.endcode = 2;
+                    break;
+                case 1 + 9:
+                    next.endcode = 1;
+                    break;
+                case 4 + 9:
+                    next.endcode = 3;
+                    break;
+            }
+        }
+        if(data.getUserMonth() > 20)
+        {
+            if (data.getFactoryActivate() && exNum > 0)
+                next.endcode = 4;
+            if (data.getFactoryActivate())
+                next.endcode = 6;
+            else
+                next.endcode = 5;
         }
     }
 }

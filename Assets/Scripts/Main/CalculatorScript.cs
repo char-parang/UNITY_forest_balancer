@@ -90,7 +90,7 @@ public class CalculatorScript : MonoBehaviour
 
     public void calculNeeds(out int[] needs, int[] prevNeeds)
     {
-        int[] result = new int[4];
+        int[] result = prevNeeds;
 
         if(prevNeeds[0] == 0&& prevNeeds[1] ==0&& prevNeeds[2] ==0&& prevNeeds[3] == 0)
         {

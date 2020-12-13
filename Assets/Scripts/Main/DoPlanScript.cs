@@ -33,7 +33,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
         {
             if (p[i])
             {
-                num[i] -= Convert.ToInt32(num[i] * 0.3f);
+                harvs[i] -= Convert.ToInt32(harvs[i] * 0.3f);
                 sat[i] -= Convert.ToInt32(sat[i] * 0.1f);
                 income[i] -= Convert.ToInt32(income[i] * 0.2f);
             }
@@ -50,6 +50,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
         int[] tmp = data.getUserForestUnits();
         tmp[0] = getPrevFarm;
         data.setPrevNum(tmp);
+        Debug.Log(num[0]);
         data.setForestUnits(num);
         data.setSatisfy(sat);
 

@@ -5,8 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class ResultNextScript : MonoBehaviour, Clickable
 {
+    public int endcode = -1;
     public void onClicked()
     {
-        SceneManager.LoadScene("Loading");
+        if(endcode == -1)
+            SceneManager.LoadScene("Loading");
+        else
+        {
+            DontDestroyOnLoad(this);
+            SceneManager.LoadScene("Ending");
+        }
     }
+
 }

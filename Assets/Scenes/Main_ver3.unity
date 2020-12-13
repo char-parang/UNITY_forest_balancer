@@ -18864,7 +18864,6 @@ GameObject:
   - component: {fileID: 1078347648}
   - component: {fileID: 1078347647}
   - component: {fileID: 1078347646}
-  - component: {fileID: 1078347645}
   - component: {fileID: 1078347644}
   m_Layer: 0
   m_Name: yes
@@ -18897,26 +18896,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1078347642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 797babc0ff861a548bd66f4eaba29bdd, type: 3}
+  m_Script: {fileID: 11500000, guid: 83e04b4071ee8b84da365d8421989435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 849418892}
-  factory: {fileID: 2083841009}
---- !u!114 &1078347645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078347642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da67d01c842dd24086a9667ba1a15f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gm: {fileID: 1236014886}
-  parentObject: {fileID: 1889038447}
-  isYesButton: 1
+  endcode: -1
 --- !u!95 &1078347646
 Animator:
   serializedVersion: 3
@@ -30055,6 +30038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 849418892}
+  next: {fileID: 1078347644}
 --- !u!1 &1761183725
 GameObject:
   m_ObjectHideFlags: 0
