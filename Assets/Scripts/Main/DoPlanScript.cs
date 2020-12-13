@@ -8,7 +8,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
 {
 
     private int fund;
-    private int[] num, sat, harvs, income = new int[4];
+    private int[] num, sat, harvs, needs, income = new int[4];
     public GameManager gm;
     public GameObject plan;
     public Data data;
@@ -42,6 +42,12 @@ public class DoPlanScript : MonoBehaviour, Clickable
         for (int i = 0; i < income.Length; i++)
             m += income[i];
         data.setUserMoney(data.getUserMoney() + m);
+        int getPrevFarm = data.getPrevNum()[0];
+        if (needs[0] > harvs[0])
+            getPrevFarm++;
+        int[] tmp = data.getUserForestUnits();
+        tmp[0] = getPrevFarm;
+        data.setPrevNum(tmp);
         data.setForestUnits(num);
         data.setSatisfy(sat);
 
@@ -54,7 +60,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
         for(int i = 0; i < 4; i++)
         {
             int a = UnityEngine.Random.Range(0, 9);
-            if (a > 8)
+            if (a > 7)
                 p[i] = true;
             else
                 p[i] = false;
@@ -85,5 +91,9 @@ public class DoPlanScript : MonoBehaviour, Clickable
     public void setHarvs(int[] h)
     {
         harvs = h;
+    }
+    public void setNeeds(int[] n)
+    {
+        needs = n;
     }
 }

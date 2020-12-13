@@ -57,6 +57,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         needs[1] = (MAX_HARV_WOOD * needs[1] / 10);
         needs[2] = (MAX_HARV_DEER * needs[2] / 10);
         needs[3] = (MAX_HARV_WOLF * needs[3] / 10);
+        doplan.setNeeds(needs);
 
         calculator.calculSat(out calcul, out t, data.getSats(), numHarv, needs, 0);
         doplan.setSat(calcul);

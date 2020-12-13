@@ -431,6 +431,15 @@ public class Data : MonoBehaviour
         List<string> data = selectData(c, "festivalScript", "code='" + code.ToString() + "'");
         return data;
     }
+    public int[] getPrevNum()
+    {
+        int[] data = new int[4];
+        string[] c = { "FarmFailNum", "wood", "deer", "wolf" };
+        List<string> d = selectData(c, "PreviousNum");
+        for (int i = 0; i < 4; i++)
+            data[i] = Convert.ToInt32(d[i]);
+        return data;
+    }
     internal void setSatisfy(int[] sat)
     {
         user.setSat('f', sat[0]);
@@ -472,5 +481,11 @@ public class Data : MonoBehaviour
         user.setMonth(user.getMonth() + 1);
         string[] c = { "Month" }, v = { (user.getMonth() + 1).ToString() };
         updateData("Char_info", c, v);
+    }
+
+    public void setPrevNum(int[] num)
+    {
+        string[] c = { "FarmFailNum", "wood", "deer", "wolf" }, v = { num[0].ToString(), num[1].ToString(), num[2].ToString(), num[3].ToString() };
+        updateData("PreviousNum", c, v);
     }
 }

@@ -12,7 +12,7 @@ public class LoadingScript : MonoBehaviour
 
     private IEnumerator waitLoading()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         SceneManager.LoadScene("Main_ver3");
     }
 }

@@ -16,9 +16,11 @@ public class DoPlanAnimationScript : MonoBehaviour
     private int[] money;
     private int fIncome;
     private int code;
+    public GameObject result, option;
 
     public void OnEnable()
     {
+        option.SetActive(false);
         if (code == 0)
             startAnimation();
         else
@@ -41,6 +43,7 @@ public class DoPlanAnimationScript : MonoBehaviour
         StartCoroutine(waitAndDraoAnim("wood", 1));
         StartCoroutine(waitAndDraoAnim("deer", 2));
         StartCoroutine(waitAndDraoAnim("wolf", 3));
+        StartCoroutine(waitForAnimationFinish());
     }
 
     public void startFestivalAnimation()
@@ -69,7 +72,7 @@ public class DoPlanAnimationScript : MonoBehaviour
         yield return new WaitForSeconds(3);
         obj = gameObject.transform.Find("festival").gameObject;
         obj.SetActive(false);
-        gm.setOtherClickable(true);
+        result.SetActive(true);
         gameObject.SetActive(false);
     }
 
@@ -120,6 +123,13 @@ public class DoPlanAnimationScript : MonoBehaviour
     {
         yield return new WaitForSeconds(6*idx);
         drawAnim(animName, idx);
+    }
+
+    private IEnumerator waitForAnimationFinish()
+    {
+        yield return new WaitForSeconds(24);
+        result.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     public void setHarvs(int[] n)
