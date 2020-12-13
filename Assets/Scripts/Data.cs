@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Data;
 using Mono.Data.Sqlite;
+using System.IO;
 
 public class Data : MonoBehaviour
 {
@@ -342,17 +343,17 @@ public class Data : MonoBehaviour
 
     public void updateData(string table, string[] cols, string[] vals)
     {
-        if(cols.Length != vals.Length)
+        if (cols.Length != vals.Length)
         {
             Debug.LogError("sql error: cols and vals not matched");
             return;
         }
-        string conn = "URI=file:" + Application.dataPath + "/StreamingAssets/fb_DB.db";
-        IDbConnection dbconn = (IDbConnection)new SqliteConnection(conn);
+        string conn = Application.dataPath + "/StreamingAssets/fb_DB.db";
+        IDbConnection dbconn = (IDbConnection)new SqliteConnection("URI=file:" + conn);
         dbconn.Open();
         IDbCommand dbcmd = dbconn.CreateCommand();
         string sqlQuery = "UPDATE " + table + " SET ";
-        for(int i =0; i < cols.Length; i++)
+        for (int i = 0; i < cols.Length; i++)
         {
             sqlQuery += cols[i] + "=" + vals[i];
             if (i < cols.Length - 1) sqlQuery += ", ";
@@ -360,6 +361,7 @@ public class Data : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         dbconn.Close();
     }
+
     public List<string> getScript(int code, string who)
     {
         string[] c = { "script1", "answer", "script2", "result" };
@@ -462,6 +464,13 @@ public class Data : MonoBehaviour
     {
         user.setFactoryActivate(b);
         string[] c = { "FactoryActivate" }, v = { b.ToString() };
+        updateData("Char_info", c, v);
+    }
+
+    public void nextMonth()
+    {
+        user.setMonth(user.getMonth() + 1);
+        string[] c = { "Month" }, v = { (user.getMonth() + 1).ToString() };
         updateData("Char_info", c, v);
     }
 }

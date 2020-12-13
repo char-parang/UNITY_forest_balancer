@@ -19,6 +19,12 @@ public class FestivalButtonScript : MonoBehaviour, Clickable
         dpascript.setCode(code);
         dpascript.setMoney(Convert.ToInt32(getMoney() * income));
 
+        data.setUserMoney(data.getUserMoney() + Convert.ToInt32(getMoney() * income));
+        int[] userSat = data.getSats();
+        for (int i = 0; i < 4; i++)
+            userSat[i] += sat;
+        data.setSatisfy(userSat);
+
         dpa.SetActive(true);
         plan.SetActive(false);
     }

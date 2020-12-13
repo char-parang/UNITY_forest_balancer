@@ -10,6 +10,6 @@ public class snsLoginButtonScript : MonoBehaviour, Clickable
     {
         //TODO: SNS LOGIN
         //TODO: LOAD DATA
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Main_ver3");
     }
 }

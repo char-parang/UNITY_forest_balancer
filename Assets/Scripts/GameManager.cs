@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviour, ScrollControlable
         onMainScreenStart();
         bgm = gameObject.GetComponent<AudioSource>();
         bgm.volume = 0.5f;
-        if(data.getFactoryActivate())
-            village.transform.Find("factory").Find("factoryImage").GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     private void onMainScreenStart()
@@ -27,10 +25,7 @@ public class GameManager : MonoBehaviour, ScrollControlable
             popups[i].SetActive(false);
         }
         clickables = GameObject.FindGameObjectsWithTag("Clickable");
-        for (int i = 0; i < clickables.Length; i++)
-        {
-            clickables[i].GetComponent<Collider2D>().enabled = true;
-        }
+        setOtherClickable(true);
     }
 
     public void setOtherClickable(GameObject obj, bool status)
@@ -41,7 +36,8 @@ public class GameManager : MonoBehaviour, ScrollControlable
     {
         for (int i = 0; i < clickables.Length; i++)
         {
-            clickables[i].GetComponent<Collider2D>().enabled = status;
+            if (clickables[i].GetComponent<Collider2D>() != null)
+                clickables[i].GetComponent<Collider2D>().enabled = status;
         }
     }
 

@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class CalculatorScript : MonoBehaviour
 {
-    private Data data;
-    public CalculatorScript()
-    {
-    }
-    public void calculNum(out int[] res, int[] cur, int[] harv, int money)
+    public void calculNum(out int[] res, int[] cur, int[] harv, int money, bool isFactoryActive)
     {
         int[] result = new int[4];
         // 수확
@@ -29,7 +25,15 @@ public class CalculatorScript : MonoBehaviour
         deer += deer * 0.4f;
         wolf += wolf * 0.2f;
 
+        //공장에 의한 감소
+        if (isFactoryActive)
+        {
+            wood = wood * 0.9f;
+            deer = deer * 0.9f;
+            wolf = wolf * 0.9f;
+        }
 
+        //마을 자금에 의한 수 보완
         result[0] = Convert.ToInt32(farm);
         result[1] = Convert.ToInt32(wood + money);
         result[2] = Convert.ToInt32(deer + deer * money / 3000);
@@ -105,7 +109,7 @@ public class CalculatorScript : MonoBehaviour
         needs = result;
     }
 
-    public int calculMoney(out int[] money, int[] harv, int skillBuf)
+    public int calculMoney(out int[] money, int[] harv, int skillBuf, bool isFactoryActive)
     {
         int sum = 0;
         int[] tmp = new int[4];
@@ -116,6 +120,9 @@ public class CalculatorScript : MonoBehaviour
         for (int i = 0; i < 4; i++)
             sum += tmp[i];
         money = tmp;
+        sum = Convert.ToInt32(sum * 0.2f);
+        if (isFactoryActive)
+            sum += 1000;
         return sum;
     }
 }

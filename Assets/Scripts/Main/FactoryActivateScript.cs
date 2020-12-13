@@ -11,6 +11,6 @@ public class FactoryActivateScript : MonoBehaviour, ButtonDoOtherAction
     {
         data.setFactoryActivate(true);
         factory.transform.Find("factoryImage").GetComponent<SpriteRenderer>().color = Color.white;
-        factory.GetComponent<Collider2D>().enabled = false;
+        Destroy(factory.GetComponent<BoxCollider2D>());
     }
 }

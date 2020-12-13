@@ -8,7 +8,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
 {
 
     private int fund;
-    private int[] num, sat, income = new int[4];
+    private int[] num, sat, harvs, income = new int[4];
     public GameManager gm;
     public GameObject plan;
     public Data data;
@@ -25,7 +25,7 @@ public class DoPlanScript : MonoBehaviour, Clickable
         bool[] p = calculFail();
         DoPlanAnimationScript animscript = anim.GetComponent<DoPlanAnimationScript>();
         animscript.setFail(p);
-        animscript.setNums(num);
+        animscript.setHarvs(harvs);
         animscript.setMoney(income);
         animscript.setCode(0);
 
@@ -81,5 +81,9 @@ public class DoPlanScript : MonoBehaviour, Clickable
     public void setfund(int f)
     {
         fund = f;
+    }
+    public void setHarvs(int[] h)
+    {
+        harvs = h;
     }
 }

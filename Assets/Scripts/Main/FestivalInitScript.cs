@@ -22,7 +22,7 @@ public class FestivalInitScript : MonoBehaviour
         forest.transform.Find("hold").GetComponent<Button>().interactable = false;
         rich.transform.Find("hold").GetComponent<Button>().interactable = false;
 
-        switch (plan.GetComponent<PlanScript>().getMonth()%12)
+        switch (plan.GetComponent<PlanScript>().getMonth()%12 + 1)
         {
             case 1:
             case 2:

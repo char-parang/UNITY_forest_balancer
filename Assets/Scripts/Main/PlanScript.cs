@@ -17,7 +17,7 @@ public class PlanScript : MonoBehaviour, Clickable
         planSet[0].SetActive(true);
         planSet[1].SetActive(false);
         month = data.getUserMonth();
-        monthText.text = month + "번째 달: " + month / 12 + "년 " + month % 12 + "월";
+        monthText.text = month + "번째 달: " + month / 12 + "년 " + (month % 12 + 1) + "월";
         if (data.getFactoryActivate())
             gameObject.transform.Find("generalPlanItems").Find("factoryActivate").gameObject.SetActive(true);
     }
