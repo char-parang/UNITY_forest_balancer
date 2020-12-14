@@ -71,6 +71,14 @@ public class StoreScript : MonoBehaviour
     public void onPurchaseClicked()
     {
         data.setUserMoney(data.getUserMoney() - data.getItemPrice(selected.name));
+        int[] sat = data.getSats();
+        int eff = data.getItemEffect(selected.name);
+        for(int i = 0; i < 4; i++)
+        {
+            sat[i] += eff;
+            if (sat[i] > 100) sat[i] = 100;
+        }
+        data.setSatisfy(sat);
         userMoney.text = data.getUserMoney().ToString();
         selected.transform.localScale = new Vector3(1.0f, 1.0f);
         selected.GetComponent<Button>().interactable = false;

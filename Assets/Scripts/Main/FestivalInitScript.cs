@@ -7,6 +7,7 @@ public class FestivalInitScript : MonoBehaviour
 {
     public GameObject plan;
     private GameObject moon, forest, rich;
+    public Data data;
 
     public void OnEnable()
     {
@@ -27,17 +28,20 @@ public class FestivalInitScript : MonoBehaviour
             case 1:
             case 2:
                 moon.GetComponent<Image>().color = Color.white;
-                moon.transform.Find("hold").GetComponent<Button>().interactable = true;
+                if(data.getUserMoney() >= 2000)
+                    moon.transform.Find("hold").GetComponent<Button>().interactable = true;
                 break;
             case 6:
             case 7:
                 forest.GetComponent<Image>().color = Color.white;
-                forest.transform.Find("hold").GetComponent<Button>().interactable = true;
+                if (data.getUserMoney() >= 2000)
+                    forest.transform.Find("hold").GetComponent<Button>().interactable = true;
                 break;
             case 10:
             case 11:
                 rich.GetComponent<Image>().color = Color.white;
-                rich.transform.Find("hold").GetComponent<Button>().interactable = true;
+                if (data.getUserMoney() >= 2000)
+                    rich.transform.Find("hold").GetComponent<Button>().interactable = true;
                 break;
         }
     }

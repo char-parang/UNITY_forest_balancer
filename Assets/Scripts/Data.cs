@@ -326,6 +326,13 @@ public class Data : MonoBehaviour
         Int32.TryParse(list[0], out int data);
         return data;
     }
+    public int getItemEffect(string itemName)
+    {
+        string[] c = { "Effect" };
+        List<string> list = selectData(c, "asset_Item", "itemCode='" + itemName + "'");
+        int d = Int32.Parse(list[0]);
+        return d;
+    }
 
     public void insertData(string[] columns, string table, bool def = false)
     {
