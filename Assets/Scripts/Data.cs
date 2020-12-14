@@ -506,7 +506,7 @@ public class Data : MonoBehaviour
     public void setFactoryActivate(bool b)
     {
         user.setFactoryActivate(b);
-        string[] c = { "FactoryActivate" }, v = { b.ToString() };
+        string[] c = { "FactoryActivate" }, v = { "'"+b.ToString()+"'" };
         updateData("Char_info", c, v);
     }
 

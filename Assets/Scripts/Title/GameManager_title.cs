@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour, ScrollControlable
+public class GameManager_title : MonoBehaviour, ScrollControlable
 {
     public GameObject[] popups;
     private GameObject[] clickables;
     private AudioSource bgm;
-    public GameObject d, main;
     public Data data;
     public GameObject village;
 
@@ -21,8 +20,6 @@ public class GameManager : MonoBehaviour, ScrollControlable
 
     private void onMainScreenStart()
     {
-        d.SetActive(true);
-        main.SetActive(true);
         for(int i =0;i < popups.Length; i++)
         {
             popups[i].SetActive(false);
