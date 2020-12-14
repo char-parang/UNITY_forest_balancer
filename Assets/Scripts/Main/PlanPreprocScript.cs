@@ -11,6 +11,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     private int[] numHarv = new int[4];
     public Data data;
     public Image farmBar;
+    public GameObject[] buttons;
     public DoPlanScript doplan;
     public GameObject resultPredict;
     public GameObject[] units;
@@ -27,15 +28,23 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     {
         skills = data.getUserSkills();
         forestNums = data.getUserForestUnits();
+        for(int i = 0;  i < 3; i++)
+        {
+            if (forestNums[i + 1] <= 0)
+            {
+                Destroy(buttons[i].GetComponent<Collider2D>());
+                buttons[i].GetComponent<Image>().color = Color.gray;
+            }
+        }
         isFactoryAcitve = data.getFactoryActivate();
         calculator = new CalculatorScript();
         numPredict = resultPredict.transform.Find("amountPredict").gameObject;
         satPredict = resultPredict.transform.Find("satPredict").gameObject;
 
         numHarv[0] = forestNums[0] * 100;
-        numHarv[1] = Convert.ToInt32(MAX_HARV_WOOD * 0.5f);
-        numHarv[2] = Convert.ToInt32(MAX_HARV_DEER * 0.5f);
-        numHarv[3] = Convert.ToInt32(MAX_HARV_WOLF * 0.5f);
+        numHarv[1] = 0;
+        numHarv[2] = 0;
+        numHarv[3] = 0;
         farmBar.fillAmount = forestNums[0] / 12.0f;
 
         int[] calcul = new int[4];
