@@ -90,20 +90,23 @@ public class CalculatorScript : MonoBehaviour
 
     public void calculNeeds(out int[] needs, int[] prevNeeds)
     {
-        int[] result = new int[4];
+        int[] result = prevNeeds;
 
         if(prevNeeds[0] == 0&& prevNeeds[1] ==0&& prevNeeds[2] ==0&& prevNeeds[3] == 0)
         {
             for(int i = 0; i < 4; i++)
-                result[i] = UnityEngine.Random.Range(3, 9);
+                result[i] = UnityEngine.Random.Range(1, 6);
             
         }
         else
         {
             for (int i = 0; i < 4; i++)
-                result[i] = (result[i] + UnityEngine.Random.Range(-3, 3) > 10)?
-                    9 : (result[i] + UnityEngine.Random.Range(-3, 3) <= 0)?
-                    1: result[i] + UnityEngine.Random.Range(-3, 3);
+            {
+                int x = UnityEngine.Random.Range(-3, 3);
+                result[i] = (result[i] + x > 10) ?
+                    9 : (result[i] + x <= 0) ?
+                    1 : result[i] + x;
+            }
         }
 
         needs = result;

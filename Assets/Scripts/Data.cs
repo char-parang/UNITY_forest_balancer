@@ -79,6 +79,8 @@ public class Data : MonoBehaviour
             return factoryActivate;
         }
     };
+
+
     private class FOREST
     {
         int farmer, tree, deer, wolf;
@@ -239,8 +241,8 @@ public class Data : MonoBehaviour
         List<string> d = selectData(cols, "Char_info");
         if (d.Count < 1)
         {
-            string[] c = { "" };
-            insertData(c, "Char_info", true);
+            string[] ac = { "" };
+            insertData(ac, "Char_info", true);
             d = selectData(cols, "Char_info");
         }
         user.setForest('f', Int32.Parse(d[0]));
@@ -260,10 +262,19 @@ public class Data : MonoBehaviour
         user.setSat('w', Int32.Parse(d[8]));
         user.setMonth(Int32.Parse(d[9]));
         user.setMoney(Int32.Parse(d[10]));
-        int[] tmp = new int[4];
+        int[] needs, prevNeeds = new int[4];
         for (int i = 0; i < 4; i++)
-            tmp[i] = Int32.Parse(d[11][i].ToString());
-        user.setNeeds(tmp);
+            prevNeeds[i] = Int32.Parse(d[11][i].ToString());
+        CalculatorScript calculator = new CalculatorScript();
+        calculator.calculNeeds(out needs, prevNeeds);
+        user.setNeeds(needs);
+        string v="";
+        for(int i = 0; i < 4; i++)
+        {
+            v += needs[i].ToString();
+        }
+        string[] c = { "needs" }, val = { v };
+        updateData("Char_info", c, val);
         user.setFieldStatus(d[12]);
         user.setFactoryActivate(Convert.ToBoolean(d[13]));
     }
@@ -283,6 +294,7 @@ public class Data : MonoBehaviour
         sqlQuery += " FROM " + table;
         if (where != null) sqlQuery += " WHERE " + where;
         dbcmd.CommandText = sqlQuery;
+        Debug.Log(sqlQuery);
         IDataReader reader = dbcmd.ExecuteReader();
 
         List<string> data = new List<string>();
@@ -337,7 +349,19 @@ public class Data : MonoBehaviour
             sqlQuery += ")";
         }
         dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
+        dbcmd.ExecuteNonQuery();
+        dbconn.Close();
+    }
+
+    public void deleteData(string table, string where)
+    {
+        string conn = "URI=file:" + Application.dataPath + "/StreamingAssets/fb_DB.db";
+        IDbConnection dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open();
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        string sqlQuery = "DELETE FROM " + table + " WHERE " + where;
+        dbcmd.CommandText = sqlQuery;
+        dbcmd.ExecuteNonQuery();
         dbconn.Close();
     }
 
@@ -359,6 +383,7 @@ public class Data : MonoBehaviour
             if (i < cols.Length - 1) sqlQuery += ", ";
         }
         dbcmd.CommandText = sqlQuery;
+        dbcmd.ExecuteNonQuery();
         dbconn.Close();
     }
 
@@ -402,6 +427,14 @@ public class Data : MonoBehaviour
         string[] v = { m.ToString() };
         updateData("Char_info", c, v);
     }
+    internal string[] getEndingScript(int endcode)
+    {
+        string[] c = { "script" };
+        List<string> da = selectData(c, "endingScript", "code='" + endcode.ToString() + "'");
+        string d = da[0];
+        string[] data = d.Split(';');
+        return data;
+    }
     public void setUserSkills(int[] s)
     {
         user.setSkills(s);
@@ -431,6 +464,15 @@ public class Data : MonoBehaviour
         List<string> data = selectData(c, "festivalScript", "code='" + code.ToString() + "'");
         return data;
     }
+    public int[] getPrevNum()
+    {
+        int[] data = new int[4];
+        string[] c = { "FarmFailNum", "wood", "deer", "wolf" };
+        List<string> d = selectData(c, "PreviousNum");
+        for (int i = 0; i < 4; i++)
+            data[i] = Convert.ToInt32(d[i]);
+        return data;
+    }
     internal void setSatisfy(int[] sat)
     {
         user.setSat('f', sat[0]);
@@ -438,18 +480,18 @@ public class Data : MonoBehaviour
         user.setSat('d', sat[2]);
         user.setSat('w', sat[3]);
 
-        string[] c = { "sat_Farmer", "sat_Wood", "sat_Deer", "sat_Wolf" }, v = { sat[0].ToString(), sat[1].ToString(), sat[2].ToString(), sat[3].ToString()};
+        string[] c = { "sat_Farmer", "sat_Tree", "sat_Deer", "sat_Wolf" }, v = { sat[0].ToString(), sat[1].ToString(), sat[2].ToString(), sat[3].ToString()};
         updateData("Char_info", c, v);
     }
 
     internal void setForestUnits(int[] num)
     {
-        user.setForest('f', num[0] / 100);
+        user.setForest('f', num[0]);
         user.setForest('t', num[1]);
         user.setForest('d', num[2]);
         user.setForest('w', num[3]);
 
-        string[] c = {"Filds", "num_Tree", "num_Deer", "num_Wolf" }, v = { (num[0]/100).ToString(), num[1].ToString(), num[2].ToString(), num[3].ToString() };
+        string[] c = {"Filds", "num_Tree", "num_Deer", "num_Wolf" }, v = { (num[0]).ToString(), num[1].ToString(), num[2].ToString(), num[3].ToString() };
         updateData("Char_info", c, v);
     }
 
@@ -457,7 +499,8 @@ public class Data : MonoBehaviour
     {
         user.setForest('f', i);
         user.setFieldStatus(s);
-        string[] c = { "FieldStatus", "Filds" }, v = { s, i.ToString() };
+        Debug.Log(s);
+        string[] c = { "FieldStatus", "Filds" }, v = {"'"+ s+"'", i.ToString() };
         updateData("Char_info", c, v);
     }
     public void setFactoryActivate(bool b)
@@ -470,7 +513,13 @@ public class Data : MonoBehaviour
     public void nextMonth()
     {
         user.setMonth(user.getMonth() + 1);
-        string[] c = { "Month" }, v = { (user.getMonth() + 1).ToString() };
+        string[] c = { "Months" }, v = { (user.getMonth() + 1).ToString() };
         updateData("Char_info", c, v);
+    }
+
+    public void setPrevNum(int[] num)
+    {
+        string[] c = { "FarmFailNum", "wood", "deer", "wolf" }, v = { num[0].ToString(), num[1].ToString(), num[2].ToString(), num[3].ToString() };
+        updateData("PreviousNum", c, v);
     }
 }

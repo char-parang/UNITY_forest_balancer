@@ -26,6 +26,7 @@ public class TileChangeScript : MonoBehaviour, ButtonDoOtherAction
         int farmNum = units[0];
         string fieldStat = data.getFieldStatus();
         char[] tmp = fieldStat.ToCharArray();
+        Debug.Log(tmp);
         if (tmp[clickedTileNum - 1] == '0')
         {
             tmp[clickedTileNum - 1] = '1';
@@ -37,6 +38,7 @@ public class TileChangeScript : MonoBehaviour, ButtonDoOtherAction
             farmNum--;
         }
         fieldStat = new string(tmp);
+        Debug.Log(fieldStat);
         data.setFieldStatus(fieldStat, farmNum);
         tileManager.update();
     }

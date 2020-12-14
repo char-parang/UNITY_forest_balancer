@@ -19,7 +19,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
     private CalculatorScript calculator;
     private int[] skills, forestNums;
     private int MAX_HARV_WOOD = 1000, MAX_HARV_DEER = 150, MAX_HARV_WOLF = 40;
-    private int[] needs;
+    private int[] needs = new int[4], needsPercent;
     private int[] income;
     private bool isFactoryAcitve;
 
@@ -45,18 +45,19 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         doplan.setHarvs(numHarv);
 
         string[] t;
-        int[] prevNeeds = data.getUserNeeds();
 
-        calculator.calculNeeds(out needs, prevNeeds);
-        for(int i = 0; i < 4; i++)
+        needsPercent = data.getUserNeeds();
+
+        for (int i = 0; i < 4; i++)
         {
-            units[i].transform.Find("predict").localPosition = new Vector3(23.9f+(231.9f - 23.9f) / 10 * needs[i], units[i].transform.Find("predict").localPosition.y);
+            units[i].transform.Find("predict").localPosition = new Vector3(23.9f+(231.9f - 23.9f) / 10 * needsPercent[i], units[i].transform.Find("predict").localPosition.y);
         }
 
-        needs[0] *= 100;
-        needs[1] = (MAX_HARV_WOOD * needs[1] / 10);
-        needs[2] = (MAX_HARV_DEER * needs[2] / 10);
-        needs[3] = (MAX_HARV_WOLF * needs[3] / 10);
+        needs[0] = 1200 * needsPercent[0]/10;
+        needs[1] = MAX_HARV_WOOD * needsPercent[1] / 10;
+        needs[2] = MAX_HARV_DEER * needsPercent[2] / 10;
+        needs[3] = MAX_HARV_WOLF * needsPercent[3] / 10;
+        doplan.setNeeds(needs);
 
         calculator.calculSat(out calcul, out t, data.getSats(), numHarv, needs, 0);
         doplan.setSat(calcul);
@@ -82,6 +83,7 @@ public class PlanPreprocScript : MonoBehaviour, ScrollControlable
         }
         int[] calcul;
         calculator.calculNum(out calcul, data.getUserForestUnits(), numHarv, fund, isFactoryAcitve);
+        Debug.Log(calcul[3]);
         drawPredict(calcul);
         doplan.setNum(calcul);
         doplan.setHarvs(numHarv);
