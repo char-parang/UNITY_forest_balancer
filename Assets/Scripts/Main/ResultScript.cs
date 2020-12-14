@@ -92,14 +92,15 @@ public class ResultScript : MonoBehaviour
         }
         int exNum = 0;
         int ex = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
+        {
             if (cur[i] <= 0)
             {
                 exNum++;
-                ex += (i+1) * (i+1);
+                ex += (i + 1) * (i + 1);
             }
         }
-        if(exNum > 1)
+        if (exNum > 1)
         {
             switch (ex)
             {
@@ -114,7 +115,7 @@ public class ResultScript : MonoBehaviour
                     break;
             }
         }
-        if(data.getUserMonth() > 20)
+        if (data.getUserMonth() > 20)
         {
             if (data.getFactoryActivate() && exNum > 0)
                 next.endcode = 4;

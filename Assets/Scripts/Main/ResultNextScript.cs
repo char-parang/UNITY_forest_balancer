@@ -12,7 +12,6 @@ public class ResultNextScript : MonoBehaviour, Clickable
             SceneManager.LoadScene("Loading");
         else
         {
-            DontDestroyOnLoad(this);
             SceneManager.LoadScene("Ending");
         }
     }

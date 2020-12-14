@@ -265,7 +265,6 @@ public class Data : MonoBehaviour
         int[] needs, prevNeeds = new int[4];
         for (int i = 0; i < 4; i++)
             prevNeeds[i] = Int32.Parse(d[11][i].ToString());
-        Debug.Log(prevNeeds[0]);
         CalculatorScript calculator = new CalculatorScript();
         calculator.calculNeeds(out needs, prevNeeds);
         user.setNeeds(needs);
@@ -295,6 +294,7 @@ public class Data : MonoBehaviour
         sqlQuery += " FROM " + table;
         if (where != null) sqlQuery += " WHERE " + where;
         dbcmd.CommandText = sqlQuery;
+        Debug.Log(sqlQuery);
         IDataReader reader = dbcmd.ExecuteReader();
 
         List<string> data = new List<string>();
@@ -430,7 +430,8 @@ public class Data : MonoBehaviour
     internal string[] getEndingScript(int endcode)
     {
         string[] c = { "script" };
-        string d = selectData(c, "endingScript", "code='" + endcode + "'")[0];
+        List<string> da = selectData(c, "endingScript", "code='" + endcode.ToString() + "'");
+        string d = da[0];
         string[] data = d.Split(';');
         return data;
     }
@@ -498,7 +499,8 @@ public class Data : MonoBehaviour
     {
         user.setForest('f', i);
         user.setFieldStatus(s);
-        string[] c = { "FieldStatus", "Filds" }, v = { s, i.ToString() };
+        Debug.Log(s);
+        string[] c = { "FieldStatus", "Filds" }, v = {"'"+ s+"'", i.ToString() };
         updateData("Char_info", c, v);
     }
     public void setFactoryActivate(bool b)
