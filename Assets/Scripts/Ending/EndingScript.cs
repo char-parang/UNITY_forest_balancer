@@ -73,6 +73,7 @@ public class EndingScript : MonoBehaviour
             switch (ex)
             {
                 case 5:
+                case 14:
                     code = 2;
                     break;
                 case 10:
